@@ -53,4 +53,9 @@ public class PlayerController : MonoBehaviour {
 
 		weapon.Shoot();
 	}
+
+	public void AddVelocity(float velocity, Vector2 direction)
+	{
+		rb.velocity = velocity * direction * Time.deltaTime;
+	}
 }
