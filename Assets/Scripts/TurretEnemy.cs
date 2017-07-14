@@ -39,7 +39,7 @@ public class TurretEnemy : Enemy {
 		if(target != null && CanReachTarget())
 		{
 			Vector2 direction = (target.transform.position - pivot.position).normalized;
-			pivot.right = direction;
+			pivot.up = direction;
 		}
 	}
 

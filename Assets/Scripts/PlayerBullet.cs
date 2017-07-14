@@ -26,14 +26,17 @@ public class PlayerBullet : Bullet {
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		Debug.Log("coll " + collision.collider.gameObject.name + ", " + collision.collider.gameObject.tag);
-		if (collision.collider.tag == "Enemy")
+		switch(collision.collider.tag)
 		{
-			Debug.Log("hit with enemy");
-
-			Health health = collision.collider.gameObject.GetComponent<Health>();
-			health.Hit(damage);
-			Destroy(gameObject);
+			case "Enemy":
+				Health health = collision.collider.gameObject.GetComponent<Health>();
+				health.Hit(damage);
+				break;
+			case "EnemyBullet":
+				Destroy(collision.collider.gameObject);
+			break;
 		}
+		
+		Destroy(gameObject);
 	}
 }
