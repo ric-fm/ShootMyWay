@@ -23,9 +23,9 @@ public class TurretEnemy : Enemy {
 
 	private void Awake()
 	{
-		target = GameObject.Find("Player").transform;
-
+		target = GameObject.FindGameObjectWithTag("Player").transform;
 	}
+
 	private void Start()
 	{
 		cannon.target = target;
