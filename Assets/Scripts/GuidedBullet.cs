@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GuidedBullet : MonoBehaviour {
+public class GuidedBullet : Bullet {
 
 	public Transform target;
 
@@ -22,15 +22,9 @@ public class GuidedBullet : MonoBehaviour {
 
 	Vector2 direction;
 
-	Rigidbody2D rb;
-
-	private void Start()
+	public override void Shoot(Vector2 direction, float speed)
 	{
-		rb = GetComponent<Rigidbody2D>();
-	}
-	public void Shoot(Vector2 direction, float speed)
-	{
-		StartCoroutine(FollowTarget());
+		//StartCoroutine(FollowTarget());
 	}
 
 	private void Update()
@@ -80,6 +74,12 @@ public class GuidedBullet : MonoBehaviour {
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		//Destroy(gameObject);
+		if (collision.collider.tag.Equals("Player"))
+		{
+			Health health = collision.collider.gameObject.GetComponent<Health>();
+			health.Hit(damage);
+			StopAllCoroutines();
+			Destroy(gameObject);
+		}
 	}
 }

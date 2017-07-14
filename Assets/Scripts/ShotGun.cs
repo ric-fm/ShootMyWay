@@ -17,6 +17,8 @@ public class ShotGun : Weapon
 
 	public float coolDownTime;
 
+	public int damage;
+
 	private void Start()
 	{
 		CanShoot = true;
@@ -35,7 +37,8 @@ public class ShotGun : Weapon
 
 			GameObject bulletGo = Instantiate(bulletTemplate, shootPoint.position, Quaternion.Euler(0, 0, angle));
 
-			Bullet bullet = bulletGo.GetComponent<Bullet>();
+			PlayerBullet bullet = bulletGo.GetComponent<PlayerBullet>();
+			bullet.damage = damage;
 			bullet.lifeTime = bulletLifeTime;
 
 			bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime);
