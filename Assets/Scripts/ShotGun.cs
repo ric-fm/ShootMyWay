@@ -9,8 +9,6 @@ using UnityEngine;
 
 public class ShotGun : Weapon
 {
-	public GameObject bulletTemplate;
-	public Transform shootPoint;
 
 	public int bulletAmount;
 	public float bulletSpread;
