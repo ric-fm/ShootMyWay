@@ -9,25 +9,16 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-	Rigidbody2D rb;
+	protected Rigidbody2D rb;
 
-	public float lifeTime;
+	public int damage;
 
 	void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
 	}
 
-	public void Shoot(Vector2 direction, float speed)
+	public virtual void Shoot(Vector2 direction, float speed)
 	{
-		rb.velocity = direction * speed;
-		StartCoroutine(Destroy());
-	}
-
-	IEnumerator Destroy()
-	{
-		yield return new WaitForSeconds(lifeTime);
-
-		Destroy(gameObject);
 	}
 }
