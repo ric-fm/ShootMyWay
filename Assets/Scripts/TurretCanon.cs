@@ -16,7 +16,7 @@ public class TurretCanon : Weapon {
 	{
 		GameObject bulletGo = Instantiate(bulletTemplate, shootPoint.position, Quaternion.Euler(transform.right));
 
-		GuidedBullet bullet = bulletGo.GetComponent<GuidedBullet>();
+		Missile bullet = bulletGo.GetComponent<Missile>();
 
 		bullet.target = target;
 

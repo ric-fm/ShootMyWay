@@ -24,11 +24,12 @@ public class TurretEnemy : Enemy {
 	private void Awake()
 	{
 		target = GameObject.FindGameObjectWithTag("Player").transform;
+		cannon.target = target;
+
 	}
 
 	private void Start()
 	{
-		cannon.target = target;
 
 		StartCoroutine(CheckTargetForShoot());
 

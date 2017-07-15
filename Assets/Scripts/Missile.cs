@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GuidedBullet : Bullet {
+public class Missile : Bullet {
 
 	public Transform target;
 
@@ -32,15 +32,15 @@ public class GuidedBullet : Bullet {
 		// TODO: Mejorar comportamiento de misil al seguir al target
 		direction = (target.transform.position - this.transform.position).normalized;
 
-		float angle = Vector2.Angle(Vector2.right, direction);
+		float angle = Vector2.Angle(Vector2.up, direction);
 
-		angle = direction.y < 0 ? -angle : angle;
+		angle = direction.x > 0 ? -angle : angle;
 
 
 		Vector3 relativePos = target.position - transform.position;
 		Quaternion rotation = Quaternion.LookRotation(relativePos);
 
-		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, homingSensitivity);
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0, angle), homingSensitivity * Time.deltaTime);
 
 		rb.velocity = direction * speed * Time.deltaTime;
 	}
