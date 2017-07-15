@@ -24,6 +24,11 @@ public class PlayerController : MonoBehaviour {
 
 	public Weapon weapon;
 
+	public CameraController screenShakeController;
+
+	public float shakeMagnitudeOnShoot;
+	public float shakeDurationOnShoot;
+
 
 	void Start ()
 	{
@@ -52,6 +57,8 @@ public class PlayerController : MonoBehaviour {
 		rb.velocity = force;
 
 		weapon.Shoot();
+
+		screenShakeController.Shake(shakeMagnitudeOnShoot, shakeDurationOnShoot);
 	}
 
 	public void AddVelocity(float velocity, Vector2 direction)
