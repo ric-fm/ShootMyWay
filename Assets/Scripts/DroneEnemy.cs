@@ -139,7 +139,8 @@ public class DroneEnemy : Enemy
 
 			if (!health.godMode)
 			{
-				Destroy(gameObject);
+				//Destroy(gameObject);
+				Kill();
 			}
 		}
 		SelectRandomTarget();
