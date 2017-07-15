@@ -7,9 +7,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroneEnemy : Enemy {
+public class DroneEnemy : Enemy
+{
 
 	public Transform target;
+	Vector2 targetPoint;
 
 	Health health;
 
@@ -25,36 +27,75 @@ public class DroneEnemy : Enemy {
 
 	public float turnAngle;
 
-	protected override void Awake ()
+	public float CheckDistance;
+
+	public float balanceFactor;
+
+	public float velocityTurnLimit;
+
+	public float chooseRancomTargetPointInterval;
+	public float randomTargetOffset;
+
+	bool hasTarget = false;
+	bool hasRandomTarget = false;
+	bool alive = true;
+
+	protected override void Awake()
 	{
 		base.Awake();
 
 		rb = GetComponent<Rigidbody2D>();
 		health = GetComponent<Health>();
 		target = GameObject.FindObjectOfType<PlayerController>().transform;
+		targetPoint = transform.position;
+		SelectRandomTarget();
 	}
-	
-	void Update ()
+
+	void Update()
 	{
-		direction = (target.transform.position - this.transform.position).normalized;
-
-		float angle = Vector2.Angle(Vector2.right, direction);
-
-		angle = direction.y < 0 ? -angle : angle;
-
-		Vector3 relativePos = target.position - transform.position;
-		Quaternion rotation = Quaternion.LookRotation(relativePos);
-
-		//transform.rotation = Quaternion.Slerp(transform.rotation, rotation, homingSensitivity);
-
-		rb.velocity = direction * speed * Time.deltaTime;
-
-		if(rb.velocity.x > 0)
+		if (CanReachTarget())
 		{
-			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0,0,-turnAngle), homingSensitivity * Time.deltaTime);
+			targetPoint = target.position;
+			if (!hasTarget)
+			{
+				hasTarget = true;
+				hasRandomTarget = false;
+				StopAllCoroutines();
+			}
+
+			direction = (target.transform.position - this.transform.position).normalized;
+
+			Vector3 relativePos = target.position - transform.position;
+			Quaternion rotation = Quaternion.LookRotation(relativePos);
+			rb.velocity = direction * speed * Time.deltaTime;
+		}
+		else if(hasRandomTarget)
+		{
+			direction = (targetPoint - (Vector2)this.transform.position).normalized;
+			Vector2 desiredVelocity = direction * speed * Time.deltaTime;
+
+			rb.velocity = Vector2.Lerp(rb.velocity, desiredVelocity, balanceFactor * Time.deltaTime);
+		}
+		else
+		{
+			if (hasTarget || !hasRandomTarget)
+			{
+				hasTarget = false;
+				StartCoroutine(ChooseRandomTargetPoint());
+			}
+			rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, balanceFactor * Time.deltaTime);
+		}
+		Animate();
+	}
+
+	void Animate()
+	{
+		if (rb.velocity.x > velocityTurnLimit)
+		{
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, -turnAngle), homingSensitivity * Time.deltaTime);
 
 		}
-		else if(rb.velocity.x < 0)
+		else if (rb.velocity.x < -velocityTurnLimit)
 		{
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, turnAngle), homingSensitivity * Time.deltaTime);
 
@@ -65,17 +106,42 @@ public class DroneEnemy : Enemy {
 		}
 	}
 
+	bool CanReachTarget()
+	{
+		return Vector2.Distance(target.position, transform.position) < CheckDistance;
+	}
+
+	IEnumerator ChooseRandomTargetPoint()
+	{
+		while (alive)
+		{
+			hasRandomTarget = true;
+			yield return new WaitForSeconds(chooseRancomTargetPointInterval);
+
+			SelectRandomTarget();
+		}
+	}
+
+	void SelectRandomTarget()
+	{
+		float randX = Random.Range(transform.position.x - randomTargetOffset, transform.position.x + randomTargetOffset);
+		float randY = Random.Range(transform.position.y - randomTargetOffset, transform.position.y + randomTargetOffset);
+		new Vector2(randX, randY);
+		targetPoint = new Vector2(randX, randY);
+	}
+
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if(collision.collider.gameObject.tag == "Player")
+		if (collision.collider.gameObject.tag == "Player")
 		{
 			Health playerHealth = collision.collider.gameObject.GetComponent<Health>();
 			playerHealth.Hit(damage);
 
-			if(!health.godMode)
+			if (!health.godMode)
 			{
 				Destroy(gameObject);
 			}
 		}
+		SelectRandomTarget();
 	}
 }
