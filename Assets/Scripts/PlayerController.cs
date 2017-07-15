@@ -35,12 +35,17 @@ public class PlayerController : MonoBehaviour {
 	public float shakeMagnitudeOnShoot;
 	public float shakeDurationOnShoot;
 
-#endregion
+	EnemyRecord enemyRecord;
+
+	#endregion
+
+	Animator animator;
 
 
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
 	}
 	
 	void Update ()
@@ -57,14 +62,16 @@ public class PlayerController : MonoBehaviour {
 		
 	}
 
-
 	void Fire(Vector2 direction)
 	{
+		animator.SetTrigger("Shoot");
+
 		Vector2 force = -direction * ImpulseSpeed * Time.deltaTime;
 		//rb.AddForce(force , ForceMode2D.Impulse);
 		rb.velocity = force;
 
 		weapon.Shoot();
+
 
 		screenShakeController.Shake(shakeMagnitudeOnShoot, shakeDurationOnShoot);
 	}
