@@ -11,6 +11,8 @@ public class DroneEnemy : Enemy {
 
 	public Transform target;
 
+	Health health;
+
 	Vector2 direction;
 
 	Rigidbody2D rb;
@@ -21,9 +23,12 @@ public class DroneEnemy : Enemy {
 
 	public int damage;
 
+	public float turnAngle;
+
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		health = GetComponent<Health>();
 		target = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 	
@@ -38,18 +43,37 @@ public class DroneEnemy : Enemy {
 		Vector3 relativePos = target.position - transform.position;
 		Quaternion rotation = Quaternion.LookRotation(relativePos);
 
-		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, homingSensitivity);
+		//transform.rotation = Quaternion.Slerp(transform.rotation, rotation, homingSensitivity);
 
 		rb.velocity = direction * speed * Time.deltaTime;
+
+		if(rb.velocity.x > 0)
+		{
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0,0,-turnAngle), homingSensitivity * Time.deltaTime);
+
+		}
+		else if(rb.velocity.x < 0)
+		{
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, turnAngle), homingSensitivity * Time.deltaTime);
+
+		}
+		else
+		{
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), homingSensitivity * Time.deltaTime);
+		}
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if(collision.collider.gameObject.tag == "Player")
 		{
-			Health health = collision.collider.gameObject.GetComponent<Health>();
-			health.Hit(damage);
-			Destroy(gameObject);
+			Health playerHealth = collision.collider.gameObject.GetComponent<Health>();
+			playerHealth.Hit(damage);
+
+			if(!health.godMode)
+			{
+				Destroy(gameObject);
+			}
 		}
 	}
 }

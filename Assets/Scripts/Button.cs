@@ -37,7 +37,7 @@ public class Button : MonoBehaviour
 
 			foreach (Logic logic in logics)
 			{
-				logic.Activate();
+				logic.Activate(this);
 			}
 
 			if(deactivate)
@@ -53,7 +53,7 @@ public class Button : MonoBehaviour
 
 		foreach(Logic logic in logics)
 		{
-			logic.Deactivate();
+			logic.Deactivate(this);
 		}
 		activated = false;
 	}
