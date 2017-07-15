@@ -41,11 +41,17 @@ public class PlayerController : MonoBehaviour {
 
 	Animator animator;
 
+	PlayerStats stats;
+
+	public int killedStatAmount = 1;
+
 
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
+
+		stats = new PlayerStats();
 	}
 	
 	void Update ()
@@ -79,5 +85,33 @@ public class PlayerController : MonoBehaviour {
 	public void AddVelocity(float velocity, Vector2 direction)
 	{
 		rb.velocity = velocity * direction * Time.deltaTime;
+	}
+
+
+	public void EnemyKilled(Enemy enemy)
+	{
+		switch (enemy.colorType)
+		{
+			case Enemy.ColorType.NONE:
+				break;
+
+			case Enemy.ColorType.RED:
+				stats.IncreasePowerCount(killedStatAmount);
+				stats.DecreaseCooldownCount(killedStatAmount);
+				stats.DecreaseRangeCount(killedStatAmount);
+				break;
+
+			case Enemy.ColorType.GREN:
+				stats.IncreaseRangeCount(killedStatAmount);
+				stats.DecreasePowerCount(killedStatAmount);
+				stats.DecreaseCooldownCount(killedStatAmount);
+				break;
+
+			case Enemy.ColorType.BLUE:
+				stats.IncreaseCooldownCount(killedStatAmount);
+				stats.DecreasePowerCount(killedStatAmount);
+				stats.DecreaseRangeCount(killedStatAmount);
+				break;
+		}
 	}
 }
