@@ -140,6 +140,28 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	public void SparryHit(Sparry sparry)
+	{
+		switch (sparry.colorType)
+		{
+			case Enemy.ColorType.NONE:
+				ResetBoosts();
+				break;
+
+			case Enemy.ColorType.RED:
+				SetPowerBoost();
+				break;
+
+			case Enemy.ColorType.GREEN:
+				SetRangeBoost();
+				break;
+
+			case Enemy.ColorType.BLUE:
+				SetCoolDownBoost();
+				break;
+		}
+	}
+
 	void ResetBoosts()
 	{
 		Debug.Log("Reset boost");

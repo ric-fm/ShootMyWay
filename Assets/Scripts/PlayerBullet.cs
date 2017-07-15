@@ -46,6 +46,10 @@ public class PlayerBullet : Bullet {
 			case "EnemyBullet":
 				Destroy(collision.collider.gameObject);
 			break;
+			case "Sparry":
+				Sparry sparry = collision.collider.gameObject.GetComponent<Sparry>();
+				sparry.Hit();
+				break;
 		}
 		
 		Destroy(gameObject);
