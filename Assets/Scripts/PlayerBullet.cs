@@ -17,6 +17,13 @@ public class PlayerBullet : Bullet {
 		StartCoroutine(Destroy());
 	}
 
+	public void Shoot(Vector2 direction, float speed, float lifeTime)
+	{
+		this.lifeTime = lifeTime;
+		rb.velocity = direction * speed;
+		StartCoroutine(Destroy());
+	}
+
 	IEnumerator Destroy()
 	{
 		yield return new WaitForSeconds(lifeTime);

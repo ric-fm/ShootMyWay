@@ -16,6 +16,7 @@ public class ShotGun : Weapon
 	public float bulletLifeTime;
 
 	public float coolDownTime;
+	public float range;
 
 	public int damage;
 
@@ -44,11 +45,13 @@ public class ShotGun : Weapon
 
 			PlayerBullet bullet = bulletGo.GetComponent<PlayerBullet>();
 			bullet.damage = damage;
-			bullet.lifeTime = bulletLifeTime;
+			bullet.lifeTime = coolDownTime;
 
-			bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime);
+			//bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime);
+			bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime, range);
 
-			if(coolDownTime > 0)
+
+			if (coolDownTime > 0)
 			{
 				StartCoroutine(CoolDown());
 			}

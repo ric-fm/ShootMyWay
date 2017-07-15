@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
 	#region Shoot
 
-	public Weapon weapon;
+	public ShotGun shotgun;
 
 	public CameraController screenShakeController;
 
@@ -77,13 +77,16 @@ public class PlayerController : MonoBehaviour
 		Vector2 direction = (targetPoint - (Vector2)transform.position).normalized;
 		transform.right = direction;
 
-		if (Input.GetButtonDown("Fire1") && weapon.CanShoot)
+		if (Input.GetButtonDown("Fire1") && shotgun.CanShoot)
 		{
 			Fire(direction);
 		}
 
 		//sR.color = currentColor;
 		ChangeColor();
+
+		shotgun.coolDownTime = currentStats.CoolDown;
+		shotgun.range = currentStats.Range;
 	}
 
 	void Fire(Vector2 direction)
@@ -95,7 +98,7 @@ public class PlayerController : MonoBehaviour
 		//rb.AddForce(force , ForceMode2D.Impulse);
 		rb.velocity = force;
 
-		weapon.Shoot();
+		shotgun.Shoot();
 
 
 		screenShakeController.Shake(shakeMagnitudeOnShoot, shakeDurationOnShoot);
