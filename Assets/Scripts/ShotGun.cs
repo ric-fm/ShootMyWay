@@ -19,14 +19,19 @@ public class ShotGun : Weapon
 
 	public int damage;
 
+	Animator animator;
+
 	private void Start()
 	{
+		animator = GetComponent<Animator>();
 		CanShoot = true;
 	}
 
 	public override void Shoot()
 	{
-		float angle = Vector2.Angle(Vector2.right, transform.right);
+		animator.SetTrigger("Shoot");
+
+		float angle = Vector2.Angle(Vector2.up, transform.right);
 
 		for (int i = 0; i < bulletAmount; i++)
 		{
