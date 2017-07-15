@@ -65,4 +65,28 @@ public class GameManager : MonoBehaviour {
 
 		playerController.EnemyKilled(enemy);
 	}
+
+	public void SparryHit(Sparry sparry)
+	{
+		switch (sparry.colorType)
+		{
+			case Enemy.ColorType.NONE:
+				++enemyRecord.None;
+				break;
+
+			case Enemy.ColorType.RED:
+				++enemyRecord.Red;
+				break;
+
+			case Enemy.ColorType.GREEN:
+				++enemyRecord.Green;
+				break;
+
+			case Enemy.ColorType.BLUE:
+				++enemyRecord.Blue;
+				break;
+		}
+
+		playerController.SparryHit(sparry);
+	}
 }
