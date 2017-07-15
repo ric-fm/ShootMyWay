@@ -36,13 +36,21 @@ public class PlayerBullet : Bullet {
 		switch(collision.collider.tag)
 		{
 			case "Enemy":
-				Health health = collision.collider.gameObject.GetComponent<Health>();
-				if(health.Hit(damage))
+				Enemy enemy = collision.collider.gameObject.GetComponent<Enemy>();
+
+				if(enemy.Hit(damage))
 				{
-					Enemy enemy = collision.collider.gameObject.GetComponent<Enemy>();
-					enemy.Kill();
-					GameManager.Instance.EnemyKilled(enemy);
+					if(enemy.IsDead)
+					{
+						enemy.Kill();
+						GameManager.Instance.EnemyKilled(enemy);
+					}
 				}
+				//Health health = collision.collider.gameObject.GetComponent<Health>();
+				//if(health.Hit(damage))
+				//{
+					
+				//}
 				break;
 			case "EnemyBullet":
 				Destroy(collision.collider.gameObject);

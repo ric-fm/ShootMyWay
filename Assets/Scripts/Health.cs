@@ -13,6 +13,10 @@ public class Health : MonoBehaviour {
 
 	public bool godMode;
 
+	public float cooldownTime;
+
+	public bool canHit = true;
+
 	public bool IsDead
 	{
 		get
@@ -21,24 +25,38 @@ public class Health : MonoBehaviour {
 		}
 	}
 
-	public bool Hit(int damage)
+	Animator animator;
+
+	private void Start()
 	{
-		if(godMode || life <= 0)
+		animator = GetComponent<Animator>();
+	}
+
+	public void Hit(int damage)
+	{
+		if(godMode || !canHit || life <= 0)
 		{
-			return false;
+			return;
 		}
 		life -= damage;
 
 		if (life <= 0)
 		{
-			//Die();
-			return true;
+			return;
 		}
-		return false;
+
+		if(animator != null)
+		{
+			animator.SetTrigger("Hit");
+		}
+
+		StartCoroutine(CoolDown());
 	}
 
-	//public void Die()
-	//{
-	//	Destroy(gameObject);
-	//}
+	IEnumerator CoolDown()
+	{
+		canHit = false;
+		yield return new WaitForSeconds(cooldownTime);
+		canHit = true;
+	}
 }

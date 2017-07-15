@@ -13,8 +13,6 @@ public class DroneEnemy : Enemy
 	public Transform target;
 	Vector2 targetPoint;
 
-	Health health;
-
 	Vector2 direction;
 
 	Rigidbody2D rb;
@@ -22,8 +20,6 @@ public class DroneEnemy : Enemy
 	public float speed;
 
 	public float homingSensitivity;
-
-	public int damage;
 
 	public float turnAngle;
 
@@ -45,7 +41,6 @@ public class DroneEnemy : Enemy
 		base.Awake();
 
 		rb = GetComponent<Rigidbody2D>();
-		health = GetComponent<Health>();
 		target = GameObject.FindObjectOfType<PlayerController>().transform;
 		targetPoint = transform.position;
 		SelectRandomTarget();
@@ -135,14 +130,12 @@ public class DroneEnemy : Enemy
 		if (collision.collider.gameObject.tag == "Player")
 		{
 			Health playerHealth = collision.collider.gameObject.GetComponent<Health>();
-			playerHealth.Hit(damage);
-
-			if (!health.godMode)
-			{
-				//Destroy(gameObject);
-				Kill();
-			}
+			playerHealth.Hit(damageOnContact);
+			Kill();
 		}
-		SelectRandomTarget();
+		else
+		{
+			SelectRandomTarget();
+		}
 	}
 }

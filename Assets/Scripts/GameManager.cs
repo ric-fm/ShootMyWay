@@ -6,6 +6,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour {
 
 	EnemyRecord enemyRecord;
 
+	CameraController cameraController;
 	PlayerController playerController;
 
 	public Color noneColor;
@@ -38,8 +40,17 @@ public class GameManager : MonoBehaviour {
 
 	private void Start()
 	{
+		cameraController = GameObject.FindObjectOfType<CameraController>();
 		playerController = GameObject.FindObjectOfType<PlayerController>();
 		enemyRecord = new EnemyRecord();
+	}
+
+	private void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.R))
+		{
+			RestartLevel();
+		}
 	}
 
 	public void EnemyKilled(Enemy enemy)
@@ -88,5 +99,21 @@ public class GameManager : MonoBehaviour {
 		}
 
 		playerController.SparryHit(sparry);
+	}
+
+	public void ShakeScreen(float magnitude, float duration)
+	{
+		cameraController.Shake(magnitude, duration);
+	}
+
+	public void ShakeScreen(float magnitude, float duration, Vector2 position)
+	{
+		float distanceToPlayer = ((Vector2)playerController.transform.position - position).magnitude;
+		cameraController.Shake(magnitude/distanceToPlayer, duration);
+	}
+
+	public void RestartLevel()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 }

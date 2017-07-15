@@ -20,10 +20,15 @@ public class Missile : Bullet {
 	public float speed;
 	public float homingSensitivity;
 
+	public float shakeMagnitudeOnExplode;
+	public float shakeDurationOnExplode;
+
 	Vector2 direction;
 
 	public float noiseFactor = 10;
 	public float noiseDegrees = 15.0f;
+
+	public GameObject explosionTemplate;
 
 	public override void Shoot(Vector2 direction, float speed)
 	{
@@ -56,5 +61,11 @@ public class Missile : Bullet {
 		}
 
 		Destroy(gameObject);
+
+		GameObject explosionGO = GameObject.Instantiate(explosionTemplate, transform.position, Quaternion.identity);
+
+		explosionGO.GetComponent<DestroyOnAnimationEnd>().Explode(GameManager.Instance.noneColor);
+
+		GameManager.Instance.ShakeScreen(shakeMagnitudeOnExplode, shakeDurationOnExplode, transform.position);
 	}
 }

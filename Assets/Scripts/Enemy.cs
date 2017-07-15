@@ -23,9 +23,28 @@ public class Enemy : MonoBehaviour {
 
 	public GameObject explosionTemplate;
 
+	public float shakeMagnitudeOnDie;
+	public float shakeDurationOnDie;
+
+	Animator animator;
+
+	Health health;
+
+	public int damageOnContact;
+
+	public bool IsDead
+	{
+		get
+		{
+			return health.IsDead;
+		}
+	}
+
 	protected virtual void Awake()
 	{
 		sR = GetComponent<SpriteRenderer>();
+		animator = GetComponent<Animator>();
+		health = GetComponent<Health>();
 	}
 
 	protected virtual void Start()
@@ -67,6 +86,22 @@ public class Enemy : MonoBehaviour {
 
 		explosionGO.GetComponent<DestroyOnAnimationEnd>().Explode(sR.color);
 
+		GameManager.Instance.ShakeScreen(shakeMagnitudeOnDie, shakeDurationOnDie, transform.position);
+
 		Destroy(gameObject);
+	}
+
+	public virtual bool Hit(int damage)
+	{
+		if(health.canHit)
+		{
+			health.Hit(damage);
+			if(!health.IsDead)
+			{
+				//animator.SetTrigger("Hit");
+			}
+			return true;
+		}
+		return false;
 	}
 }

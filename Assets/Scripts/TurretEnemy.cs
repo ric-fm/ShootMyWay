@@ -62,4 +62,14 @@ public class TurretEnemy : Enemy {
 			yield return new WaitForSeconds(CheckInterval);
 		}
 	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.collider.gameObject.tag == "Player")
+		{
+			Health playerHealth = collision.collider.gameObject.GetComponent<Health>();
+			playerHealth.Hit(damageOnContact);
+			Kill();
+		}
+	}
 }

@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
 		shotgun.Shoot();
 
 
-		screenShakeController.Shake(shakeMagnitudeOnShoot, shakeDurationOnShoot);
+		GameManager.Instance.ShakeScreen(shakeMagnitudeOnShoot, shakeDurationOnShoot);
 	}
 
 	void ChangeColor()
@@ -183,8 +183,6 @@ public class PlayerController : MonoBehaviour
 
 	void ResetBoosts()
 	{
-		Debug.Log("Reset boost");
-
 		CurrentStat = StatType.NONE;
 		currentColor = GameManager.Instance.noneColor;
 
@@ -196,7 +194,6 @@ public class PlayerController : MonoBehaviour
 
 	void SetPowerBoost()
 	{
-		Debug.Log("Power boost");
 		CurrentStat = StatType.POWER;
 
 		currentColor = GameManager.Instance.redColor;
@@ -208,8 +205,6 @@ public class PlayerController : MonoBehaviour
 
 	void SetRangeBoost()
 	{
-		Debug.Log("Range boost");
-
 		CurrentStat = StatType.RANGE;
 
 		currentColor = GameManager.Instance.greenColor;
@@ -221,8 +216,6 @@ public class PlayerController : MonoBehaviour
 
 	void SetCoolDownBoost()
 	{
-		Debug.Log("Cooldown boost");
-
 		CurrentStat = StatType.COOLDOWN;
 
 		currentColor = GameManager.Instance.blueColor;
