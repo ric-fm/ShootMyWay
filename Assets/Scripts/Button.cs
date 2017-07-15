@@ -28,9 +28,6 @@ public class Button : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		animator.SetTrigger("Press");
-
-
 		if (oneUse && used || activated)
 		{
 			return;
@@ -38,8 +35,6 @@ public class Button : MonoBehaviour
 
 		if (collision.collider.tag == "Player")
 		{
-			Debug.Log("Pressed");
-
 			used = true;
 			activated = true;
 

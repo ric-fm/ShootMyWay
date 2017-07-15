@@ -22,10 +22,6 @@ public class PlayerController : MonoBehaviour {
 	#endregion
 
 #region Shoot
-
-	public Transform shootPoint;
-	public GameObject bulletTemplate;
-
 	Vector2 targetPoint;
 
 	public Weapon weapon;
@@ -35,13 +31,11 @@ public class PlayerController : MonoBehaviour {
 	public float shakeMagnitudeOnShoot;
 	public float shakeDurationOnShoot;
 
-	EnemyRecord enemyRecord;
-
 	#endregion
 
 	Animator animator;
 
-	PlayerStats stats;
+	public PlayerStats stats;
 
 	public int killedStatAmount = 1;
 
@@ -50,8 +44,6 @@ public class PlayerController : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
-
-		stats = new PlayerStats();
 	}
 	
 	void Update ()

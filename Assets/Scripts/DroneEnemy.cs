@@ -25,11 +25,13 @@ public class DroneEnemy : Enemy {
 
 	public float turnAngle;
 
-	void Start ()
+	protected override void Awake ()
 	{
+		base.Awake();
+
 		rb = GetComponent<Rigidbody2D>();
 		health = GetComponent<Health>();
-		target = GameObject.FindGameObjectWithTag("Player").transform;
+		target = GameObject.FindObjectOfType<PlayerController>().transform;
 	}
 	
 	void Update ()

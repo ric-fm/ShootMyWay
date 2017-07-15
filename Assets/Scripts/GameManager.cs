@@ -19,9 +19,17 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public EnemyRecord enemyRecord;
+	EnemyRecord enemyRecord;
 
-	PlayerController player;
+	PlayerController playerController;
+
+	public Color noneColor;
+
+	public Color redColor;
+
+	public Color greenColor;
+
+	public Color blueColor;
 
 	private void Awake()
 	{
@@ -30,7 +38,8 @@ public class GameManager : MonoBehaviour {
 
 	private void Start()
 	{
-		player = GameObject.FindObjectOfType<PlayerController>();
+		playerController = GameObject.FindObjectOfType<PlayerController>();
+		enemyRecord = new EnemyRecord();
 	}
 
 	public void EnemyKilled(Enemy enemy)
@@ -53,5 +62,7 @@ public class GameManager : MonoBehaviour {
 				++enemyRecord.Blue;
 				break;
 		}
+
+		playerController.EnemyKilled(enemy);
 	}
 }
