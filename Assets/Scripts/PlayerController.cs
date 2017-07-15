@@ -6,6 +6,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour {
 
@@ -39,11 +40,14 @@ public class PlayerController : MonoBehaviour {
 
 	public int killedStatAmount = 1;
 
+	SpriteRenderer sR;
+
 
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
+		sR = GetComponent<SpriteRenderer>();
 	}
 	
 	void Update ()
@@ -57,7 +61,22 @@ public class PlayerController : MonoBehaviour {
 		{
 			Fire(direction);
 		}
-		
+		CheckStats();
+	}
+
+	void CheckStats()
+	{
+		Color blendColor;
+
+		blendColor = GameManager.Instance.noneColor;
+
+		blendColor = Color.Lerp(blendColor, GameManager.Instance.redColor, (float)stats.powerCount / stats.maxPowerCount);
+
+		blendColor = Color.Lerp(blendColor, GameManager.Instance.greenColor, (float)stats.rangeCount / stats.maxRangeCount);
+
+		blendColor = Color.Lerp(blendColor, GameManager.Instance.blueColor, (float)stats.cooldownCount / stats.maxCooldownCount);
+
+		sR.color = blendColor;
 	}
 
 	void Fire(Vector2 direction)
