@@ -48,7 +48,6 @@ public class Missile : Bullet {
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		Debug.Log("Coll");
 		if (collision.collider.tag.Equals("Player"))
 		{
 			Health health = collision.collider.gameObject.GetComponent<Health>();

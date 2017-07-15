@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour {
 		NONE,
 		RED,
 		BLUE,
-		GREN
+		GREEN
 	}
 
 	public ColorType colorType;
@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour {
 				ChangeColor(GameManager.Instance.redColor);
 				break;
 
-			case Enemy.ColorType.GREN:
+			case Enemy.ColorType.GREEN:
 				ChangeColor(GameManager.Instance.greenColor);
 				break;
 

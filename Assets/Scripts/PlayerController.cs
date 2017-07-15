@@ -8,10 +8,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
+	public enum StatType
+	{
+		NONE,
+		POWER,
+		COOLDOWN,
+		RANGE
+	}
 
-#region Movement
+	#region Movement
 	public Vector2 MaxSpeed = new Vector2(20, 20);
 
 	public Vector2 CurrentSpeed;
@@ -22,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 
 	#endregion
 
-#region Shoot
+	#region Shoot
 	Vector2 targetPoint;
 
 	public Weapon weapon;
@@ -42,15 +50,29 @@ public class PlayerController : MonoBehaviour {
 
 	SpriteRenderer sR;
 
+	public StatType CurrentStat;
 
-	void Start ()
+	public PlayerStats normalStats;
+	public PlayerStats poweredStats;
+
+	public PlayerStats currentStats;
+
+	Color currentColor;
+
+	public float changeColorFactor = 1.0f;
+
+	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		sR = GetComponent<SpriteRenderer>();
+
+		currentStats = normalStats;
+
+		currentColor = GameManager.Instance.noneColor;
 	}
-	
-	void Update ()
+
+	void Update()
 	{
 		Vector2 targetPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -61,29 +83,17 @@ public class PlayerController : MonoBehaviour {
 		{
 			Fire(direction);
 		}
-		CheckStats();
-	}
 
-	void CheckStats()
-	{
-		Color blendColor;
-
-		blendColor = GameManager.Instance.noneColor;
-
-		blendColor = Color.Lerp(blendColor, GameManager.Instance.redColor, (float)stats.powerCount / stats.maxPowerCount);
-
-		blendColor = Color.Lerp(blendColor, GameManager.Instance.greenColor, (float)stats.rangeCount / stats.maxRangeCount);
-
-		blendColor = Color.Lerp(blendColor, GameManager.Instance.blueColor, (float)stats.cooldownCount / stats.maxCooldownCount);
-
-		sR.color = blendColor;
+		//sR.color = currentColor;
+		sR.color = Color.Lerp(sR.color, currentColor, changeColorFactor * Time.deltaTime);
 	}
 
 	void Fire(Vector2 direction)
 	{
 		animator.SetTrigger("Shoot");
 
-		Vector2 force = -direction * ImpulseSpeed * Time.deltaTime;
+		//Vector2 force = -direction * ImpulseSpeed * Time.deltaTime;
+		Vector2 force = -direction * currentStats.Power * Time.deltaTime;
 		//rb.AddForce(force , ForceMode2D.Impulse);
 		rb.velocity = force;
 
@@ -104,25 +114,71 @@ public class PlayerController : MonoBehaviour {
 		switch (enemy.colorType)
 		{
 			case Enemy.ColorType.NONE:
+				ResetBoosts();
 				break;
 
 			case Enemy.ColorType.RED:
-				stats.IncreasePowerCount(killedStatAmount);
-				stats.DecreaseCooldownCount(killedStatAmount);
-				stats.DecreaseRangeCount(killedStatAmount);
+				SetPowerBoost();
 				break;
 
-			case Enemy.ColorType.GREN:
-				stats.IncreaseRangeCount(killedStatAmount);
-				stats.DecreasePowerCount(killedStatAmount);
-				stats.DecreaseCooldownCount(killedStatAmount);
+			case Enemy.ColorType.GREEN:
+				SetRangeBoost();
 				break;
 
 			case Enemy.ColorType.BLUE:
-				stats.IncreaseCooldownCount(killedStatAmount);
-				stats.DecreasePowerCount(killedStatAmount);
-				stats.DecreaseRangeCount(killedStatAmount);
+				SetCoolDownBoost();
 				break;
 		}
+	}
+
+	void ResetBoosts()
+	{
+		Debug.Log("Reset boost");
+
+		CurrentStat = StatType.NONE;
+		currentColor = GameManager.Instance.noneColor;
+
+
+		currentStats.Power = normalStats.Power;
+		currentStats.Range = normalStats.Range;
+		currentStats.CoolDown = normalStats.CoolDown;
+	}
+
+	void SetPowerBoost()
+	{
+		Debug.Log("Power boost");
+		CurrentStat = StatType.POWER;
+
+		currentColor = GameManager.Instance.redColor;
+
+		currentStats.Power = poweredStats.Power;
+		currentStats.Range = normalStats.Range;
+		currentStats.CoolDown = normalStats.CoolDown;
+	}
+
+	void SetRangeBoost()
+	{
+		Debug.Log("Range boost");
+
+		CurrentStat = StatType.RANGE;
+
+		currentColor = GameManager.Instance.greenColor;
+
+		currentStats.Range = poweredStats.Range;
+		currentStats.Power = normalStats.Power;
+		currentStats.CoolDown = normalStats.CoolDown;
+	}
+
+	void SetCoolDownBoost()
+	{
+		Debug.Log("Cooldown boost");
+
+		CurrentStat = StatType.COOLDOWN;
+
+		currentColor = GameManager.Instance.blueColor;
+
+		currentStats.CoolDown = poweredStats.CoolDown;
+		currentStats.Power = normalStats.Power;
+		currentStats.Range = normalStats.Range;
 	}
 }

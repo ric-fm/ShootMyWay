@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour {
 				++enemyRecord.Red;
 				break;
 
-			case Enemy.ColorType.GREN:
+			case Enemy.ColorType.GREEN:
 				++enemyRecord.Green;
 				break;
 
