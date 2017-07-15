@@ -40,6 +40,7 @@ public class PlayerBullet : Bullet {
 				if(health.Hit(damage))
 				{
 					Enemy enemy = collision.collider.gameObject.GetComponent<Enemy>();
+					enemy.Kill();
 					GameManager.Instance.EnemyKilled(enemy);
 				}
 				break;

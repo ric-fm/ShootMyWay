@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
 
 	public float changeColorFactor = 1.0f;
 
+	public Transform tail;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -87,6 +89,23 @@ public class PlayerController : MonoBehaviour
 
 		shotgun.coolDownTime = currentStats.CoolDown;
 		shotgun.range = currentStats.Range;
+
+		AnimateTail();
+	}
+
+	void AnimateTail()
+	{
+		float angle = transform.rotation.eulerAngles.z;
+
+		float speed = rb.velocity.magnitude;
+
+		float sign = Mathf.Sign(transform.InverseTransformDirection(rb.velocity).x);
+
+		angle += 0.1f * speed * sign;
+
+		angle = Mathf.Lerp(tail.rotation.eulerAngles.z, angle, Time.deltaTime);
+
+		tail.Rotate(new Vector3(0, 0, angle * Time.deltaTime));
 	}
 
 	void Fire(Vector2 direction)

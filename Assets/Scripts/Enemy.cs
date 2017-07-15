@@ -21,6 +21,8 @@ public class Enemy : MonoBehaviour {
 
 	SpriteRenderer sR;
 
+	public GameObject explosionTemplate;
+
 	protected virtual void Awake()
 	{
 		sR = GetComponent<SpriteRenderer>();
@@ -57,5 +59,14 @@ public class Enemy : MonoBehaviour {
 				ChangeColor(GameManager.Instance.blueColor);
 				break;
 		}
+	}
+
+	public virtual void Kill()
+	{
+		GameObject explosionGO = GameObject.Instantiate(explosionTemplate, transform.position, Quaternion.identity);
+
+		explosionGO.GetComponent<DestroyOnAnimationEnd>().Explode(sR.color);
+
+		Destroy(gameObject);
 	}
 }

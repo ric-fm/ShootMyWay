@@ -31,14 +31,14 @@ public class Health : MonoBehaviour {
 
 		if (life <= 0)
 		{
-			Die();
+			//Die();
 			return true;
 		}
 		return false;
 	}
 
-	public void Die()
-	{
-		Destroy(gameObject);
-	}
+	//public void Die()
+	//{
+	//	Destroy(gameObject);
+	//}
 }
