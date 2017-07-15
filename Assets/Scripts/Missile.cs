@@ -63,6 +63,7 @@ public class Missile : Bullet {
 		Destroy(gameObject);
 
 		GameObject explosionGO = GameObject.Instantiate(explosionTemplate, transform.position, Quaternion.identity);
+		explosionGO.transform.localScale = Vector2.one * 0.8f;
 
 		explosionGO.GetComponent<DestroyOnAnimationEnd>().Explode(GameManager.Instance.noneColor);
 
