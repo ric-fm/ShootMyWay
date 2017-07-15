@@ -12,14 +12,28 @@ public class TurretCanon : Weapon {
 	[HideInInspector]
 	public Transform target;
 
+	bool shoot = false;
+
+	public float shotSpeed;
+
 	public override void Shoot()
 	{
-		GameObject bulletGo = Instantiate(bulletTemplate, shootPoint.position, Quaternion.Euler(transform.right));
+		shoot = true;
+	}
 
-		Missile bullet = bulletGo.GetComponent<Missile>();
+	private void LateUpdate()
+	{
+		if(shoot)
+		{
+			shoot = false;
 
-		bullet.target = target;
+			GameObject bulletGo = Instantiate(bulletTemplate, shootPoint.position, transform.rotation);
 
-		bullet.Shoot(transform.right, 0);
+			Missile bullet = bulletGo.GetComponent<Missile>();
+
+			bullet.target = target;
+
+			bullet.Shoot(transform.up, shotSpeed);
+		}
 	}
 }

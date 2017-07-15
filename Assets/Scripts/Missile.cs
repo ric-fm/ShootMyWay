@@ -22,54 +22,28 @@ public class Missile : Bullet {
 
 	Vector2 direction;
 
+	public float noiseFactor = 10;
+	public float noiseDegrees = 15.0f;
+
 	public override void Shoot(Vector2 direction, float speed)
 	{
-		//StartCoroutine(FollowTarget());
+		this.direction = direction;
+		this.speed = speed;
 	}
 
 	private void Update()
 	{
-		// TODO: Mejorar comportamiento de misil al seguir al target
-		direction = (target.transform.position - this.transform.position).normalized;
-
-		float angle = Vector2.Angle(Vector2.up, direction);
-
-		angle = direction.x > 0 ? -angle : angle;
-
-
-		Vector3 relativePos = target.position - transform.position;
-		Quaternion rotation = Quaternion.LookRotation(relativePos);
-
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,0, angle), homingSensitivity * Time.deltaTime);
+		Deviate();
 
 		rb.velocity = direction * speed * Time.deltaTime;
 	}
 
-	IEnumerator FollowTarget()
+	void Deviate()
 	{
-		while(alive)
-		{
-			Debug.Log("detect");
-			//direction = (target.transform.position - this.transform.position).normalized;
-			//direction = transform.InverseTransformPoint(target.position);
+		float rand_angle = Random.Range(-noiseDegrees, noiseDegrees);
 
-			
-
-			//transform.Rotate(Vector3.forward, turnSpeed * Time.deltaTime * angle);
-
-			//var targetRotation = Quaternion.LookRotation(target.position - transform.position, Vector3.right);
-			//transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
-
-
-			//Vector3 relativePos = target.position - transform.position;
-			//Quaternion rotation = Quaternion.LookRotation(relativePos);
-
-			//transform.rotation = Quaternion.Slerp(transform.rotation, rotation, homingSensitivity);
-
-			//transform.Translate(0, 0, speed * Time.deltaTime, Space.Self);
-
-			yield return new WaitForSeconds(detectTargetInterval);
-		}
+		transform.Rotate( new Vector3(0, 0, rand_angle * noiseFactor * Time.deltaTime));
+		direction = transform.up;
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
@@ -79,7 +53,8 @@ public class Missile : Bullet {
 			Health health = collision.collider.gameObject.GetComponent<Health>();
 			health.Hit(damage);
 			StopAllCoroutines();
-			Destroy(gameObject);
 		}
+
+		Destroy(gameObject);
 	}
 }
