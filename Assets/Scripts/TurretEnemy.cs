@@ -21,18 +21,20 @@ public class TurretEnemy : Enemy {
 
 	bool alive = true;
 
-	private void Awake()
+	protected override void Awake()
 	{
-		target = GameObject.FindGameObjectWithTag("Player").transform;
-		cannon.target = target;
+		base.Awake();
 
+		target = GameObject.FindObjectOfType<PlayerController>().transform;
+
+		cannon.target = target;
 	}
 
-	private void Start()
+	protected override void Start()
 	{
+		base.Start();
 
 		StartCoroutine(CheckTargetForShoot());
-
 	}
 
 	private void Update()

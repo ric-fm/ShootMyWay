@@ -13,18 +13,28 @@ public class Health : MonoBehaviour {
 
 	public bool godMode;
 
-	public void Hit(int damage)
+	public bool IsDead
 	{
-		if(godMode)
+		get
 		{
-			return;
+			return life <= 0;
+		}
+	}
+
+	public bool Hit(int damage)
+	{
+		if(godMode || life <= 0)
+		{
+			return false;
 		}
 		life -= damage;
 
 		if (life <= 0)
 		{
 			Die();
+			return true;
 		}
+		return false;
 	}
 
 	public void Die()
