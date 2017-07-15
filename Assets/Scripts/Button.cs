@@ -19,15 +19,27 @@ public class Button : MonoBehaviour
 
 	public List<Logic> logics;
 
+	Animator animator;
+
+	private void Start()
+	{
+		animator = GetComponent<Animator>();
+	}
+
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if(oneUse && used || activated)
+		animator.SetTrigger("Press");
+
+
+		if (oneUse && used || activated)
 		{
 			return;
 		}
 
 		if (collision.collider.tag == "Player")
 		{
+			Debug.Log("Pressed");
+
 			used = true;
 			activated = true;
 
@@ -51,7 +63,7 @@ public class Button : MonoBehaviour
 	{
 		yield return new WaitForSeconds(delayTime);
 
-		foreach(Logic logic in logics)
+		foreach (Logic logic in logics)
 		{
 			logic.Deactivate(this);
 		}

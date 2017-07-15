@@ -9,16 +9,22 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+
+#region Movement
 	public Vector2 MaxSpeed = new Vector2(20, 20);
 
 	public Vector2 CurrentSpeed;
 
 	public float ImpulseSpeed;
 
+	Rigidbody2D rb;
+
+	#endregion
+
+#region Shoot
+
 	public Transform shootPoint;
 	public GameObject bulletTemplate;
-
-	Rigidbody2D rb;
 
 	Vector2 targetPoint;
 
@@ -28,6 +34,8 @@ public class PlayerController : MonoBehaviour {
 
 	public float shakeMagnitudeOnShoot;
 	public float shakeDurationOnShoot;
+
+#endregion
 
 
 	void Start ()
