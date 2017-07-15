@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region Shoot
-	Vector2 targetPoint;
 
 	public Weapon weapon;
 
@@ -44,11 +43,9 @@ public class PlayerController : MonoBehaviour
 
 	Animator animator;
 
-	public PlayerStats stats;
+	//SpriteRenderer sR;
 
-	public int killedStatAmount = 1;
-
-	SpriteRenderer sR;
+	public List<SpriteRenderer> renderers;
 
 	public StatType CurrentStat;
 
@@ -65,11 +62,12 @@ public class PlayerController : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
-		sR = GetComponent<SpriteRenderer>();
+		//sR = GetComponent<SpriteRenderer>();
 
 		currentStats = normalStats;
 
 		currentColor = GameManager.Instance.noneColor;
+		ChangeColor();
 	}
 
 	void Update()
@@ -85,7 +83,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		//sR.color = currentColor;
-		sR.color = Color.Lerp(sR.color, currentColor, changeColorFactor * Time.deltaTime);
+		ChangeColor();
 	}
 
 	void Fire(Vector2 direction)
@@ -101,6 +99,14 @@ public class PlayerController : MonoBehaviour
 
 
 		screenShakeController.Shake(shakeMagnitudeOnShoot, shakeDurationOnShoot);
+	}
+
+	void ChangeColor()
+	{
+		foreach(SpriteRenderer renderer in renderers)
+		{
+			renderer.color = Color.Lerp(renderer.color, currentColor, changeColorFactor * Time.deltaTime);
+		}
 	}
 
 	public void AddVelocity(float velocity, Vector2 direction)
