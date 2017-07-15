@@ -9,74 +9,68 @@ using UnityEngine;
 
 public class DoorLogic : Logic
 {
-
-	public Transform openedPoint;
-	public Transform closedPoint;
-
 	public bool isOpened = false;
-	public float openSpeed;
-	public float closedSpeed;
 
 	bool isOpening;
 	bool isClosing;
 
-	MeshRenderer rend;
+	public List<MeshRenderer> renderers;
 
-	Button button = null;
-
-	private void Start()
+	public override void Activate()
 	{
-		rend = GetComponent<MeshRenderer>();
+		base.Activate();
+
+		Debug.Log("Activate door " + name);
+
+		Toggle();
 	}
 
-	public override void Activate(Button button)
+	public override void Deactivate()
 	{
-		if (this.button == null || this.button == button)
-		{
-			base.Activate(button);
-			this.button = button;
-			Toggle();
-		}
+		base.Deactivate();
+
+		Debug.Log("Deactivate door " + name);
+
+		Toggle();
 	}
 
-	public override void Deactivate(Button button)
-	{
-		if (this.button == null || this.button == button)
-		{
-			base.Deactivate(button);
-			this.button = null;
-			Toggle();
-		}
-	}
-
-	//private void Update()
+	//public override void Activate(Button button)
 	//{
-	//	Vector2 target;
-	//	if (isOpening)
+	//	if (this.button == null || this.button == button)
 	//	{
-	//		target = openedPoint.position;
+	//		base.Activate(button);
+	//		this.button = button;
+	//		Toggle();
 	//	}
-	//	else
-	//	{
-	//		target = closedPoint.position;
-	//	}
-	//	if(isOpening || isClosing)
-	//	{
-	//		Vector2.MoveTowards(transform.position, target, 0.1f);
-	//	}
+	//}
 
-
+	//public override void Deactivate(Button button)
+	//{
+	//	if (this.button == null || this.button == button)
+	//	{
+	//		base.Deactivate(button);
+	//		this.button = null;
+	//		Toggle();
+	//	}
 	//}
 
 	IEnumerator Open()
 	{
-		rend.enabled = false;
+		foreach(MeshRenderer renderer in renderers)
+		{
+			renderer.enabled = false;
+		}
+
 		yield return null;
 	}
 
 	IEnumerator Close()
 	{
-		rend.enabled = true;
+		foreach (MeshRenderer renderer in renderers)
+		{
+			renderer.enabled = true;
+		}
+
 		yield return null;
 	}
 
