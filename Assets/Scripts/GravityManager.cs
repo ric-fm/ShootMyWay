@@ -10,6 +10,15 @@ using System.Linq;
 
 public class GravityManager : MonoBehaviour {
 
+	private GravityManager instance;
+	public static GravityManager Instance
+	{
+		get
+		{
+			return Instance;
+		}
+	}
+
 	List<GravitySensible> sensibles;
 
 	Vector2 initialGravityDirection;
@@ -19,6 +28,11 @@ public class GravityManager : MonoBehaviour {
 
 	public bool toggleGravity = false;
 	bool gravity0 = false;
+
+	private void Awake()
+	{
+		instance = this;
+	}
 
 	void Start ()
 	{

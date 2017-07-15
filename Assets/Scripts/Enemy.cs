@@ -9,4 +9,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
+	public enum ColorType
+	{
+		NONE,
+		RED,
+		BLUE,
+		GREN
+	}
+
+	public ColorType colorType;
 }
