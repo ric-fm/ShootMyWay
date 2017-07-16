@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class KillAllObjective : MonoBehaviour {
+public class KillAllObjective : MonoBehaviour
+{
 
 	public List<Enemy> enemies;
 
@@ -26,7 +27,7 @@ public class KillAllObjective : MonoBehaviour {
 
 		enemies.Remove(enemy);
 
-		if(enemies.Count == 0)
+		if (enemies.Count == 0)
 		{
 			Debug.Log("Completed");
 			Completed();
@@ -43,13 +44,13 @@ public class KillAllObjective : MonoBehaviour {
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.W))
-		{
-			List<Enemy> enemyCopy = enemies.ToList() ;
-			foreach(Enemy enemy in enemyCopy)
-			{
-				GameObject.Destroy(enemy.gameObject);
-			}
-		}
+		//if (Input.GetKeyDown(KeyCode.W))
+		//{
+		//	List<Enemy> enemyCopy = enemies.ToList();
+		//	foreach (Enemy enemy in enemyCopy)
+		//	{
+		//		GameObject.Destroy(enemy.gameObject);
+		//	}
+		//}
 	}
 }
