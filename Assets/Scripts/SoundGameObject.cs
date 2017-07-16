@@ -16,6 +16,17 @@ public class SoundGameObject : MonoBehaviour {
 		source = GetComponent<AudioSource>();
 	}
 
+	public void Play(AudioClip clip, float volume)
+	{
+		source.clip = clip;
+
+		source.volume = volume;
+
+		source.Play();
+
+		Destroy(gameObject, source.clip.length);
+	}
+
 	public void Play(AudioClip clip)
 	{
 		source.clip = clip;

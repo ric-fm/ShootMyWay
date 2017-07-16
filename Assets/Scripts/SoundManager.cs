@@ -37,6 +37,12 @@ public class SoundManager : MonoBehaviour {
 	{
 		GameObject sourceGO = GameObject.Instantiate(sourceGOTemplate, position, Quaternion.identity);
 		sourceGO.GetComponent<SoundGameObject>().Play(clip);
+	}
+
+	public void PlaySingleAtLocation(AudioClip clip, float volume, Vector2 position)
+	{
+		GameObject sourceGO = GameObject.Instantiate(sourceGOTemplate, position, Quaternion.identity);
+		sourceGO.GetComponent<SoundGameObject>().Play(clip,volume);
 
 	}
 

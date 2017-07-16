@@ -10,9 +10,5 @@ using UnityEngine;
 public class Explosion : MonoBehaviour {
 
 	public AudioClip explosionSound;
-
-	public void Explode()
-	{
-		SoundManager.Instance.PlaySingleAtLocation(explosionSound, transform.position);
-	}
+	public float volume;
 }

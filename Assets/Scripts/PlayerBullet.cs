@@ -15,10 +15,20 @@ public class PlayerBullet : Bullet
 	public float enemyImpulse;
 
 	public AudioClip wallHitSound;
+	public float wallSoundVolume = 1.0f;
+
 	public AudioClip jailHitSound;
+	public float jailSoundVolume = 1.0f;
+
 	public AudioClip hitSparrySound;
+	public float sparrySoundVolume = 1.0f;
+
 	public AudioClip enemyHitSound;
+	public float enemySoundVolume = 1.0f;
+
 	public AudioClip bulletHitSound;
+	public float bulletSoundVolume = 1.0f;
+
 
 	public override void Shoot(Vector2 direction, float speed)
 	{
@@ -65,7 +75,7 @@ public class PlayerBullet : Bullet
 					}
 					else
 					{
-						SoundManager.Instance.PlaySingleAtLocation(enemyHitSound, transform.position);
+						SoundManager.Instance.PlaySingleAtLocation(enemyHitSound, enemySoundVolume, transform.position);
 
 						enemy.AddVelocity(enemyImpulse, transform.up);
 						GameManager.Instance.Sleep(0.1f);
@@ -75,7 +85,7 @@ public class PlayerBullet : Bullet
 				break;
 			case "EnemyBullet":
 				Destroy(collision.collider.gameObject);
-				SoundManager.Instance.PlaySingleAtLocation(bulletHitSound, transform.position);
+				SoundManager.Instance.PlaySingleAtLocation(bulletHitSound, bulletSoundVolume, transform.position);
 
 				GameManager.Instance.Sleep(0.05f);
 				break;
@@ -85,17 +95,17 @@ public class PlayerBullet : Bullet
 				GameManager.Instance.Sleep(0.1f);
 				if (sparry.Hit())
 				{
-					SoundManager.Instance.PlaySingleAtLocation(hitSparrySound, transform.position);
+					SoundManager.Instance.PlaySingleAtLocation(hitSparrySound, sparrySoundVolume, transform.position);
 				}
 				break;
 			case "Jail":
-				SoundManager.Instance.PlaySingleAtLocation(jailHitSound, transform.position);
+				SoundManager.Instance.PlaySingleAtLocation(jailHitSound, jailSoundVolume, transform.position);
 				Destroy(collision.collider.gameObject);
 				GameManager.Instance.Slow(0.6f, 0.2f);
 
 				break;
 			case "Wall":
-				SoundManager.Instance.PlaySingleAtLocation(wallHitSound, transform.position);
+				SoundManager.Instance.PlaySingleAtLocation(wallHitSound, wallSoundVolume, transform.position);
 
 				break;
 		}
