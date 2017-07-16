@@ -10,7 +10,8 @@ using UnityEngine.SceneManagement;
 
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
 	private static GameManager instance;
 
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour {
 
 	CameraController cameraController;
 	PlayerController playerController;
+	AudioListener listener;
 
 	public Color noneColor;
 
@@ -52,12 +54,13 @@ public class GameManager : MonoBehaviour {
 	{
 		cameraController = GameObject.FindObjectOfType<CameraController>();
 		playerController = GameObject.FindObjectOfType<PlayerController>();
+		listener = cameraController.gameObject.GetComponent<AudioListener>();
 		enemyRecord = new EnemyRecord();
 	}
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.R))
+		if (Input.GetKeyDown(KeyCode.R))
 		{
 			RestartLevel();
 		}
@@ -97,7 +100,7 @@ public class GameManager : MonoBehaviour {
 
 	public void EnemyKilled(Enemy enemy)
 	{
-		switch(enemy.colorType)
+		switch (enemy.colorType)
 		{
 			case Enemy.ColorType.NONE:
 				++enemyRecord.None;
@@ -151,19 +154,48 @@ public class GameManager : MonoBehaviour {
 	public void ShakeScreen(float magnitude, float duration, Vector2 position)
 	{
 		float distanceToPlayer = ((Vector2)playerController.transform.position - position).magnitude;
-		cameraController.Shake(magnitude/distanceToPlayer, duration);
+		cameraController.Shake(magnitude / distanceToPlayer, duration);
 	}
 
+	bool restart = false;
 	public void RestartLevel()
 	{
+		if (!restart)
+		{
+			StopAllCoroutines();
+			StartCoroutine(RestartLevelC());
+		}
+	}
+
+	public Image fadeImage;
+	public float fadeSpeed;
+
+	IEnumerator RestartLevelC()
+	{
+		restart = true;
+
+		Time.timeScale = 0.0f;
+
+		AudioListener.volume = 0.0f;
+
+		while (fadeImage.color.a < 0.8f)
+		{
+			fadeImage.color = Color.Lerp(fadeImage.color, Color.black, fadeSpeed * Time.unscaledDeltaTime);
+
+			yield return null;
+		}
+
+		restart = false;
+		Time.timeScale = 1.0f;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		AudioListener.volume = 1.0f;
 	}
 
 
 	bool canSlow = true;
 	public void Sleep(float time)
 	{
-		if(canSlow)
+		if (canSlow)
 		{
 			StartCoroutine(SlowC(0.0f, time));
 		}
@@ -196,9 +228,42 @@ public class GameManager : MonoBehaviour {
 
 	public void ClearPersistance()
 	{
-		foreach(Transform child in persistentTransform.transform)
+		foreach (Transform child in persistentTransform.transform)
 		{
 			Destroy(child.gameObject);
 		}
+	}
+
+	bool gameOver = false;
+
+	public void GameOver()
+	{
+		if (!gameOver)
+		{
+			PauseTimer();
+			StartCoroutine(GameOverC());
+		}
+	}
+
+	public Text restartText;
+
+	IEnumerator GameOverC()
+	{
+		gameOver = true;
+
+		yield return new WaitForSecondsRealtime(3.0f);
+
+		Debug.Log("Press R to restart");
+
+		restartText.GetComponent<Animator>().SetTrigger("FadeIn");
+
+		while (restartText.color.a < 0.8f)
+		{
+			restartText.color = Color.Lerp(restartText.color, Color.white, fadeSpeed * Time.unscaledDeltaTime);
+
+			yield return null;
+		}
+
+		restartText.GetComponent<Animator>().SetTrigger("Animate");
 	}
 }

@@ -323,6 +323,8 @@ public class PlayerController : MonoBehaviour
 
 		gameObject.SetActive(false);
 
+		GameManager.Instance.GameOver();
+
 		yield return null;
 	}
 }
