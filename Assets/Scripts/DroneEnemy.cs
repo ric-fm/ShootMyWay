@@ -142,7 +142,6 @@ public class DroneEnemy : Enemy
 		}
 		else
 		{
-			Debug.Log("Coll");
 			SelectRandomTarget();
 		}
 	}

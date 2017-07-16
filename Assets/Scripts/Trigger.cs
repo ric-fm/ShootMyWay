@@ -7,19 +7,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trigger : MonoBehaviour {
+public class Trigger : MonoBehaviour
+{
 
 	public bool destroyOnActivated = true;
 
-	public Logic logic;
+	public List<Logic> logics;
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		Debug.Log("Trigger");
 		if (collision.gameObject.tag == "Player")
 		{
-			Debug.Log("Trigger with player");
-			logic.Activate();
+			foreach (Logic logic in logics)
+			{
+				logic.Activate();
+			}
 
 			if (destroyOnActivated)
 			{

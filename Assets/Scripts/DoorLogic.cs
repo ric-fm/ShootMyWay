@@ -14,7 +14,7 @@ public class DoorLogic : Logic
 	bool isOpening;
 	bool isClosing;
 
-	public List<MeshRenderer> renderers;
+	public List<SpriteRenderer> renderers;
 	public List<Collider2D> colliders;
 
 	public override void Activate()
@@ -57,7 +57,7 @@ public class DoorLogic : Logic
 
 	IEnumerator Open()
 	{
-		foreach(MeshRenderer renderer in renderers)
+		foreach(SpriteRenderer renderer in renderers)
 		{
 			renderer.enabled = false;
 		}
@@ -72,7 +72,7 @@ public class DoorLogic : Logic
 
 	IEnumerator Close()
 	{
-		foreach (MeshRenderer renderer in renderers)
+		foreach (SpriteRenderer renderer in renderers)
 		{
 			renderer.enabled = true;
 		}
