@@ -67,10 +67,20 @@ public class TurretEnemy : Enemy {
 	{
 		if (collision.collider.gameObject.tag == "Player")
 		{
-			PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
-			playerController.AddVelocity(impulseOnContact, (playerController.transform.position - transform.position).normalized);
-			playerController.Hit(damageOnContact);
+			GameManager.Instance.playerController.AddVelocity(impulseOnContact, (GameManager.Instance.playerController.transform.position - transform.position).normalized);
+			GameManager.Instance.playerController.Hit(damageOnContact);
 			Kill();
+		}
+		if (collision.collider.gameObject.tag == "Helmet")
+		{
+			//GameManager.Instance.playerController.AddVelocity(impulseOnContact, -(GameManager.Instance.playerController.transform.position - transform.position).normalized);
+
+			if(GameManager.Instance.playerController.CurrentStat != PlayerController.StatType.RANGE)
+			{
+				GameManager.Instance.playerController.Hit(damageOnContact);
+			}
+			Hit(1);
+			//Kill();
 		}
 	}
 }

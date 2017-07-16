@@ -49,8 +49,8 @@ public class GameManager : MonoBehaviour
 	EnemyRecord enemyRecord;
 
 	CameraController cameraController;
-	PlayerController playerController;
-	Health playerHealth;
+	public PlayerController playerController;
+	public Health playerHealth;
 	AudioListener listener;
 
 	public Color noneColor;

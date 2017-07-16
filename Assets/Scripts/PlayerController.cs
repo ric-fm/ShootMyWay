@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour
 	public AudioClip deadSound;
 	AudioSource source;
 
+	public int poweredDamage;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -218,13 +220,13 @@ public class PlayerController : MonoBehaviour
 
 			case Enemy.ColorType.GREEN:
 				SetRangeBoost();
-				infoText = "SHOOT RANGE";
+				infoText = "SHOOT RANGE + HELMET PROTECTION";
 
 				break;
 
 			case Enemy.ColorType.BLUE:
 				SetCoolDownBoost();
-				infoText = "SHOOT COOLDOWN";
+				infoText = "SHOOT FIRE RATE";
 
 				break;
 		}
@@ -302,16 +304,32 @@ public class PlayerController : MonoBehaviour
 	{
 		if (collision.collider.tag == "Wall")
 		{
-			Vector2 impulseDirection = Vector3.Reflect(rb.velocity, collision.contacts[0].normal);
-
-			if (Hit(damageOnWallContact))
+			bool onHelmet = false;
+			if (collision.otherCollider.gameObject.tag == "Helmet")
 			{
-				if (health.IsDead)
+				if(CurrentStat == StatType.RANGE)
 				{
-					Kill();
+					onHelmet = true;
 				}
 			}
+			else
+			{
 
+			}
+
+			if (!onHelmet)
+			{
+				Vector2 impulseDirection = Vector3.Reflect(rb.velocity, collision.contacts[0].normal);
+
+				if (Hit(damageOnWallContact))
+				{
+					if (health.IsDead)
+					{
+						Kill();
+					}
+				}
+
+			}
 			AddVelocity(impulseOnWallContact, (transform.position - collision.collider.transform.position).normalized);
 
 		}
@@ -324,8 +342,6 @@ public class PlayerController : MonoBehaviour
 
 	public void Kill()
 	{
-		Debug.Log("Player is dead");
-
 		if (!isDead)
 		{
 			StartCoroutine(DeathAnimation());

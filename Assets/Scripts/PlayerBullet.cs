@@ -64,7 +64,10 @@ public class PlayerBullet : Bullet
 			case "Enemy":
 				Enemy enemy = collision.collider.gameObject.GetComponent<Enemy>();
 
-				if (enemy.Hit(damage))
+
+				int currentDamage = GameManager.Instance.playerController.CurrentStat == PlayerController.StatType.POWER ?
+					GameManager.Instance.playerController.poweredDamage : damage;
+				if (enemy.Hit(currentDamage))
 				{
 					if (enemy.IsDead)
 					{

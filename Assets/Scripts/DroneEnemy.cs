@@ -50,6 +50,12 @@ public class DroneEnemy : Enemy
 		//SelectRandomTarget();
 	}
 
+	protected override void Start()
+	{
+		base.Start();
+
+	}
+
 	void Update()
 	{
 		if (CanReachTarget())
@@ -134,10 +140,20 @@ public class DroneEnemy : Enemy
 	{
 		if (collision.collider.gameObject.tag == "Player")
 		{
-			PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
-			playerController.AddVelocity(impulseOnContact, (playerController.transform.position - transform.position).normalized);
+			
+			GameManager.Instance.playerController.AddVelocity(impulseOnContact, (GameManager.Instance.playerController.transform.position - transform.position).normalized);
 
-			playerController.Hit(damageOnContact);
+			GameManager.Instance.playerController.Hit(damageOnContact);
+			Kill();
+		}
+		else if (collision.collider.gameObject.tag == "Helmet")
+		{
+			GameManager.Instance.playerController.AddVelocity(impulseOnContact, (GameManager.Instance.playerController.transform.position - transform.position).normalized);
+
+			if (GameManager.Instance.playerController.CurrentStat != PlayerController.StatType.RANGE)
+			{
+				GameManager.Instance.playerController.Hit(damageOnContact);
+			}
 			Kill();
 		}
 		else

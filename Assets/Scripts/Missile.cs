@@ -55,10 +55,16 @@ public class Missile : Bullet {
 	{
 		if (collision.collider.tag.Equals("Player"))
 		{
-			PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
-
-			playerController.Hit(damage);
+			GameManager.Instance.playerController.Hit(damage);
 			StopAllCoroutines();
+		}
+		if (collision.collider.gameObject.tag == "Helmet")
+		{
+			if (GameManager.Instance.playerController.CurrentStat != PlayerController.StatType.RANGE)
+			{
+				GameManager.Instance.playerController.Hit(damage);
+			}
+			//Kill();
 		}
 
 		Destroy(gameObject);
