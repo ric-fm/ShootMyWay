@@ -202,26 +202,34 @@ public class PlayerController : MonoBehaviour
 
 	public void SparryHit(Sparry sparry)
 	{
+		string infoText = "";
 		switch (sparry.colorType)
 		{
 			case Enemy.ColorType.NONE:
 				ResetBoosts();
+				infoText = "RESET BOOSTS";
 				break;
 
 			case Enemy.ColorType.RED:
 				SetPowerBoost();
+				infoText = "SHOOT POWER";
+
 				break;
 
 			case Enemy.ColorType.GREEN:
 				SetRangeBoost();
+				infoText = "SHOOT RANGE";
+
 				break;
 
 			case Enemy.ColorType.BLUE:
 				SetCoolDownBoost();
+				infoText = "SHOOT COOLDOWN";
+
 				break;
 		}
 		shotgun.color = currentColor;
-
+		GameManager.Instance.ShowInfoText(infoText);
 	}
 
 	void ResetBoosts()

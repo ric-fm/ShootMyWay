@@ -12,6 +12,8 @@ public class TimerLogic : Logic {
 	public override void Activate()
 	{
 		base.Activate();
+		GameManager.Instance.tutorialCompleted = true;
 		GameManager.Instance.StartTimer();
+
 	}
 }

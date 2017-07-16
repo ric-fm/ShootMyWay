@@ -87,17 +87,18 @@ public class GameManager : MonoBehaviour
 	public Text livesText;
 	public Image livesImage;
 
+	public Text infoText;
+
+
 	string difficultyModeText = "EASY";
 
 	public void SetDifficulty(Difficulty difficulty)
 	{
 		this.difficulty = difficulty;
 
-		Debug.Log("Set Difficulty");
 		switch(difficulty)
 		{
 			case Difficulty.EASY:
-				Debug.Log("Set easy mode");
 
 				currentRules = easyRules;
 
@@ -105,7 +106,6 @@ public class GameManager : MonoBehaviour
 
 				break;
 			case Difficulty.NORMAL:
-				Debug.Log("Set normal mode");
 
 				currentRules = normalRules;
 
@@ -114,7 +114,6 @@ public class GameManager : MonoBehaviour
 				break;
 
 			case Difficulty.HARD:
-				Debug.Log("Set hard mode");
 
 				currentRules = hardRules;
 
@@ -165,7 +164,6 @@ public class GameManager : MonoBehaviour
 	}
 	public void ShowLivesText(bool enabled)
 	{
-		Debug.Log("ShowLivesText " + enabled);
 		livesText.enabled = enabled;
 		livesImage.enabled = enabled;
 	}
@@ -177,7 +175,6 @@ public class GameManager : MonoBehaviour
 
 	public void ShowRules()
 	{
-		Debug.Log("Show Rules");
 
 		string wallModeText = "";
 		switch(currentRules.wallMode)
@@ -203,6 +200,62 @@ public class GameManager : MonoBehaviour
 		);
 	}
 
+	public bool tutorialCompleted = false;
+	string lastInfoText = "";
+	string currentInfoText = "";
+	public void ShowInfoText(string text)
+	{
+		infoText.text = text;
+		currentInfoText = text;
+		if(lastInfoText == "")
+		{
+			lastInfoText = currentInfoText;
+		}
+		infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 1.0f);
+
+	}
+
+	public float fadeInfoSpeed = 1.0f;
+
+	IEnumerator HideInfoText()
+	{
+		while(!tutorialCompleted)
+		{
+			if(currentInfoText != "")
+			{
+				if(lastInfoText == currentInfoText)
+				{
+					lastInfoText = currentInfoText;
+					while(infoText.color.a > 0.2f)
+					{
+						if(lastInfoText != currentInfoText)
+						{
+							infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 1.0f);
+							break;
+						}
+						float newAlpha = Mathf.Lerp(infoText.color.a, 0, fadeInfoSpeed * Time.deltaTime);
+
+						infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, newAlpha);
+						yield return null;
+					}
+					if (lastInfoText == currentInfoText)
+					{
+						infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0.0f);
+						currentInfoText = "";
+						lastInfoText = "";
+					}
+				}
+				else
+				{
+					infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 1.0f);
+					lastInfoText = currentInfoText;
+				}
+			}
+
+			yield return null;
+		}
+	}
+
 	private void Awake()
 	{
 		instance = this;
@@ -225,6 +278,9 @@ public class GameManager : MonoBehaviour
 		ShowRules();
 		ShowLives();
 		ShowDifficultyAndLifeText(false);
+
+		StartCoroutine(HideInfoText());
+
 	}
 
 	private void Update()

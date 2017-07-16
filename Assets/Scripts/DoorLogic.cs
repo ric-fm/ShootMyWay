@@ -21,16 +21,12 @@ public class DoorLogic : Logic
 	{
 		base.Activate();
 
-		Debug.Log("Activate door " + name);
-
 		Toggle();
 	}
 
 	public override void Deactivate()
 	{
 		base.Deactivate();
-
-		Debug.Log("Deactivate door " + name);
 
 		Toggle();
 	}
