@@ -16,6 +16,14 @@ public class TurretCanon : Weapon {
 
 	public float shotSpeed;
 
+	AudioSource source;
+	public AudioClip shootSound;
+
+	private void Start()
+	{
+		source = GetComponent<AudioSource>();
+	}
+
 	public override void Shoot()
 	{
 		shoot = true;
@@ -33,6 +41,7 @@ public class TurretCanon : Weapon {
 
 			bullet.target = target;
 
+			SoundManager.Instance.PlaySingle(source, shootSound);
 			bullet.Shoot(transform.up, shotSpeed);
 		}
 	}

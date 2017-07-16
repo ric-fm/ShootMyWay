@@ -305,12 +305,14 @@ public class PlayerController : MonoBehaviour
 	}
 
 	public float deadPartImpulse = 200;
+	public float deathSlowScale = 0.4f;
+	public float deathSlowTime = 5.0f;
 
 	IEnumerator DeathAnimation()
 	{
 		isDead = true;
 
-		GameManager.Instance.Slow(0.4f, 3.0f);
+		GameManager.Instance.Slow(deathSlowScale, deathSlowTime);
 
 		foreach (GameObject deadPart in deadParts)
 		{
