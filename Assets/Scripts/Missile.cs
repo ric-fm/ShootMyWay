@@ -53,6 +53,7 @@ public class Missile : Bullet {
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
+		Debug.Log(collision.collider.tag);
 		if (collision.collider.tag.Equals("Player"))
 		{
 			GameManager.Instance.playerController.Hit(damage);

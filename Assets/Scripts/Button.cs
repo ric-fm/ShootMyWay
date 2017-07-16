@@ -18,6 +18,8 @@ public class Button : MonoBehaviour
 	AudioSource audioSource;
 	public AudioClip pressSound;
 
+	public bool locked;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -31,16 +33,18 @@ public class Button : MonoBehaviour
 			return;
 		}
 
-		GameManager.Instance.Slow(0.4f, 0.2f);
-
-		SoundManager.Instance.PlaySingle(audioSource, pressSound);
 		animator.SetTrigger("Press");
 
 		GameManager.Instance.playerController.AddVelocity(impulse, transform.up);
 
-		foreach (Logic logic in logics)
+		if (!locked)
 		{
-			logic.Activate();
+			GameManager.Instance.Slow(0.4f, 0.2f);
+			SoundManager.Instance.PlaySingle(audioSource, pressSound);
+			foreach (Logic logic in logics)
+			{
+				logic.Activate();
+			}
 		}
 
 	}

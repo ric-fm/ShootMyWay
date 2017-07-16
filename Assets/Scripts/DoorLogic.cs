@@ -17,6 +17,16 @@ public class DoorLogic : Logic
 	public List<SpriteRenderer> renderers;
 	public List<Collider2D> colliders;
 
+	public bool startOpened;
+
+	private void Start()
+	{
+		if(startOpened)
+		{
+			Open();
+		}
+	}
+
 	public override void Activate()
 	{
 		base.Activate();
@@ -51,7 +61,7 @@ public class DoorLogic : Logic
 	//	}
 	//}
 
-	IEnumerator Open()
+	void Open()
 	{
 		foreach(SpriteRenderer renderer in renderers)
 		{
@@ -62,11 +72,12 @@ public class DoorLogic : Logic
 		{
 			coll.enabled = false;
 		}
+		isOpened = true;
 
-		yield return null;
+		//yield return null;
 	}
 
-	IEnumerator Close()
+	void Close()
 	{
 		foreach (SpriteRenderer renderer in renderers)
 		{
@@ -77,8 +88,9 @@ public class DoorLogic : Logic
 		{
 			coll.enabled = true;
 		}
+		isOpened = false;
 
-		yield return null;
+		//yield return null;
 	}
 
 	void Toggle()
@@ -86,15 +98,17 @@ public class DoorLogic : Logic
 		if (isOpened)
 		{
 			isClosing = true;
-			StopAllCoroutines();
-			StartCoroutine(Close());
+			//StopAllCoroutines();
+			//StartCoroutine(Close());
+			Close();
 		}
 		else
 		{
 			isOpening = true;
-			StopAllCoroutines();
-			StartCoroutine(Open());
+			//StopAllCoroutines();
+			//StartCoroutine(Open());
+			Open();
 		}
-		isOpened = !isOpened;
+		//isOpened = !isOpened;
 	}
 }
