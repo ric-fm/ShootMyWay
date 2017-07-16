@@ -29,6 +29,10 @@ public class ShotGun : Weapon
 	public float noiseFactor;
 	public bool deviation = true;
 
+	public GameObject cartridgeTemplate;
+
+	public Transform cartridgePoint;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -39,9 +43,6 @@ public class ShotGun : Weapon
 	public override void Shoot()
 	{
 		animator.SetTrigger("Shoot");
-
-
-
 
 		for (int i = 0; i < bulletAmount; i++)
 		{
@@ -71,6 +72,7 @@ public class ShotGun : Weapon
 
 			if (coolDownTime > 0)
 			{
+				StopAllCoroutines();
 				StartCoroutine(CoolDown());
 			}
 		}
@@ -82,5 +84,8 @@ public class ShotGun : Weapon
 		yield return new WaitForSeconds(coolDownTime);
 
 		CanShoot = true;
+
+		GameObject cartridgeGO = Instantiate(cartridgeTemplate, cartridgePoint.position, transform.rotation, GameManager.Instance.persistentTransform);
+		cartridgeGO.GetComponent<Rigidbody2D>().AddForce((transform.up * 60.0f + -transform.right * 40.0f) * Time.deltaTime);
 	}
 }

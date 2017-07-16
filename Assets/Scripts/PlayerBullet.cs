@@ -54,13 +54,15 @@ public class PlayerBullet : Bullet
 					{
 						enemy.Kill();
 						GameManager.Instance.EnemyKilled(enemy);
+						GameManager.Instance.Slow(0.4f, 0.8f);
+
 					}
 					else
 					{
 						enemy.AddVelocity(enemyImpulse, transform.up);
+						GameManager.Instance.Sleep(0.1f);
 					}
 
-					GameManager.Instance.Sleep(0.1f);
 				}
 				break;
 			case "EnemyBullet":

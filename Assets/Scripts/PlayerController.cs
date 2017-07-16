@@ -257,9 +257,8 @@ public class PlayerController : MonoBehaviour
 	{
 		if (collision.collider.tag == "Wall")
 		{
-			//Vector2 impulseDirection = -rb.velocity;
 			Vector2 impulseDirection = Vector3.Reflect(rb.velocity, collision.contacts[0].normal);
-			//AddVelocity(impulseOnWallContact, impulseDirection);
+
 			if (Hit(damageOnWallContact))
 			{
 				if (health.IsDead)
@@ -273,7 +272,6 @@ public class PlayerController : MonoBehaviour
 		}
 		else if (collision.collider.tag == "Sparry")
 		{
-			Debug.Log("sparry");
 			AddVelocity(impulseOnWallContact, (transform.position - collision.collider.transform.position).normalized);
 		}
 

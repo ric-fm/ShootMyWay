@@ -128,8 +128,6 @@ public class DroneEnemy : Enemy
 		float randY = Random.Range(transform.position.y - randomTargetOffset, transform.position.y + randomTargetOffset);
 		new Vector2(randX, randY);
 		targetPoint = new Vector2(randX, randY);
-
-		Debug.Log(targetPoint);
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using UnityEngine.UI;
+
 public class GameManager : MonoBehaviour {
 
 	private static GameManager instance;
@@ -33,6 +35,14 @@ public class GameManager : MonoBehaviour {
 
 	public Color blueColor;
 
+
+	public Transform persistentTransform;
+
+	public bool timerOn;
+	public float timer;
+
+	public Text timerText;
+
 	private void Awake()
 	{
 		instance = this;
@@ -51,6 +61,38 @@ public class GameManager : MonoBehaviour {
 		{
 			RestartLevel();
 		}
+
+		if (timerOn == true)
+		{
+			timer += Time.deltaTime;
+		}
+
+		//string minutes = Mathf.Floor(timer / 60).ToString("00");
+		//string seconds = (timer % 60).ToString("00");
+
+		timerText.text = string.Format("{0}:{1}", Mathf.Floor(timer / 60).ToString("00"), (timer % 60).ToString("00"));
+	}
+
+	public void StartTimer()
+	{
+		timer = 0.0f;
+		timerOn = true;
+	}
+
+	public void PauseTimer()
+	{
+		timerOn = false;
+	}
+
+	public void ResumeTimer()
+	{
+		timerOn = true;
+	}
+
+	public void ResetTimer()
+	{
+		timerOn = false;
+		timer = 0.0f;
 	}
 
 	public void EnemyKilled(Enemy enemy)
@@ -150,5 +192,13 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = backupTimeScale;
 
 		canSlow = true;
+	}
+
+	public void ClearPersistance()
+	{
+		foreach(Transform child in persistentTransform.transform)
+		{
+			Destroy(child.gameObject);
+		}
 	}
 }
