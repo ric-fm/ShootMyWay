@@ -188,8 +188,6 @@ public class GameManager : MonoBehaviour
 		{
 			float a = Mathf.Lerp(fadeImage.color.a, 0.0f, fadeInSpeed * Time.unscaledDeltaTime);
 			fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, a);
-			//fadeImage.color = Color.Lerp(fadeImage.color, new Color(0,0,0,0), fadeSpeed * Time.unscaledDeltaTime);
-			Debug.Log("fadeout " + a);
 			yield return null;
 		}
 		fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, 0.0f);
