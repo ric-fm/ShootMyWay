@@ -60,10 +60,18 @@ public class PlayerController : MonoBehaviour
 
 	public Transform tail;
 
+	Health health;
+
+	public int damageOnWallContact;
+	public float impulseOnWallContact;
+
+	public float maxVelocity;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
+		health = GetComponent<Health>();
 		//sR = GetComponent<SpriteRenderer>();
 
 		currentStats = normalStats;
@@ -91,6 +99,11 @@ public class PlayerController : MonoBehaviour
 		shotgun.range = currentStats.Range;
 
 		AnimateTail();
+	}
+
+	private void FixedUpdate()
+	{
+		rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxVelocity);
 	}
 
 	void AnimateTail()
@@ -133,7 +146,7 @@ public class PlayerController : MonoBehaviour
 
 	public void AddVelocity(float velocity, Vector2 direction)
 	{
-		rb.velocity = velocity * direction * Time.deltaTime;
+		rb.velocity = Vector2.ClampMagnitude(velocity * direction * Time.deltaTime, maxVelocity);
 	}
 
 
@@ -223,5 +236,42 @@ public class PlayerController : MonoBehaviour
 		currentStats.CoolDown = poweredStats.CoolDown;
 		currentStats.Power = normalStats.Power;
 		currentStats.Range = normalStats.Range;
+	}
+
+
+	public virtual bool Hit(int damage)
+	{
+		if (health.canHit)
+		{
+			health.Hit(damage);
+			//if (!health.IsDead)
+			//{
+			//	//animator.SetTrigger("Hit");
+			//}
+			return true;
+		}
+		return false;
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.collider.tag == "Wall")
+		{
+			//Vector2 impulseDirection = -rb.velocity;
+			Vector2 impulseDirection = Vector3.Reflect(rb.velocity, collision.contacts[0].normal);
+			//AddVelocity(impulseOnWallContact, impulseDirection);
+			if (Hit(damageOnWallContact))
+			{
+				if (health.IsDead)
+				{
+					Kill();
+				}
+			}
+		}
+	}
+
+	public void Kill()
+	{
+		Debug.Log("Player is dead");
 	}
 }

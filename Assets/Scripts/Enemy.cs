@@ -96,10 +96,10 @@ public class Enemy : MonoBehaviour {
 		if(health.canHit)
 		{
 			health.Hit(damage);
-			if(!health.IsDead)
-			{
-				//animator.SetTrigger("Hit");
-			}
+			//if(!health.IsDead)
+			//{
+			//	//animator.SetTrigger("Hit");
+			//}
 			return true;
 		}
 		return false;

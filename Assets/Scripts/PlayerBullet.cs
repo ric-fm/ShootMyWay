@@ -46,11 +46,6 @@ public class PlayerBullet : Bullet {
 						GameManager.Instance.EnemyKilled(enemy);
 					}
 				}
-				//Health health = collision.collider.gameObject.GetComponent<Health>();
-				//if(health.Hit(damage))
-				//{
-					
-				//}
 				break;
 			case "EnemyBullet":
 				Destroy(collision.collider.gameObject);
