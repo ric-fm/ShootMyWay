@@ -19,11 +19,17 @@ public class DoorLogic : Logic
 
 	public bool startOpened;
 
+	AudioSource source;
+
+	public AudioClip openSound;
+	public AudioClip closeSound;
+
 	private void Start()
 	{
+		source = GetComponent<AudioSource>();
 		if(startOpened)
 		{
-			Open();
+			Open(false);
 		}
 	}
 
@@ -61,8 +67,12 @@ public class DoorLogic : Logic
 	//	}
 	//}
 
-	void Open()
+	void Open(bool sound = true)
 	{
+
+		if(sound)
+			SoundManager.Instance.PlaySingle(source, openSound);
+
 		foreach(SpriteRenderer renderer in renderers)
 		{
 			renderer.enabled = false;
@@ -79,6 +89,7 @@ public class DoorLogic : Logic
 
 	void Close()
 	{
+
 		foreach (SpriteRenderer renderer in renderers)
 		{
 			renderer.enabled = true;
