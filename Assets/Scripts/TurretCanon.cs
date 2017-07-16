@@ -31,6 +31,10 @@ public class TurretCanon : Weapon {
 
 	private void LateUpdate()
 	{
+		if(Time.timeScale == 0.0f)
+		{
+			return;
+		}
 		if(shoot)
 		{
 			shoot = false;
