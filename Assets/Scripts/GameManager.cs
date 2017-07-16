@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
 
 	public Text timerText;
 
+	public bool fadeInActive;
+	public bool fadeOutActive;
+
 	private void Awake()
 	{
 		instance = this;
@@ -56,6 +59,11 @@ public class GameManager : MonoBehaviour
 		playerController = GameObject.FindObjectOfType<PlayerController>();
 		listener = cameraController.gameObject.GetComponent<AudioListener>();
 		enemyRecord = new EnemyRecord();
+
+		if (fadeInActive)
+		{
+			StartCoroutine(StartLevelC());
+		}
 	}
 
 	private void Update()
@@ -168,27 +176,52 @@ public class GameManager : MonoBehaviour
 	}
 
 	public Image fadeImage;
-	public float fadeSpeed;
+	public float fadeInSpeed;
+
+	public float fadeOutSpeed;
+	IEnumerator StartLevelC()
+	{
+		fadeImage.color = Color.black;
+		Time.timeScale = 0.0f;
+		AudioListener.volume = 0.0f;
+		while (fadeImage.color.a > 0.3f)
+		{
+			float a = Mathf.Lerp(fadeImage.color.a, 0.0f, fadeInSpeed * Time.unscaledDeltaTime);
+			fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, a);
+			//fadeImage.color = Color.Lerp(fadeImage.color, new Color(0,0,0,0), fadeSpeed * Time.unscaledDeltaTime);
+			Debug.Log("fadeout " + a);
+			yield return null;
+		}
+		fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, 0.0f);
+		Time.timeScale = 1.0f;
+		AudioListener.volume = 1.0f;
+
+
+	}
 
 	IEnumerator RestartLevelC()
 	{
 		restart = true;
 
-		Time.timeScale = 0.0f;
-
-		AudioListener.volume = 0.0f;
-
-		while (fadeImage.color.a < 0.8f)
+		if (fadeOutActive)
 		{
-			fadeImage.color = Color.Lerp(fadeImage.color, Color.black, fadeSpeed * Time.unscaledDeltaTime);
+			Time.timeScale = 0.0f;
 
-			yield return null;
+			AudioListener.volume = 0.0f;
+
+			while (fadeImage.color.a < 0.7f)
+			{
+				fadeImage.color = Color.Lerp(fadeImage.color, Color.black, fadeOutSpeed * Time.unscaledDeltaTime);
+
+				yield return null;
+			}
+
+			restart = false;
+			Time.timeScale = 1.0f;
+			AudioListener.volume = 1.0f;
 		}
-
 		restart = false;
-		Time.timeScale = 1.0f;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-		AudioListener.volume = 1.0f;
 	}
 
 
@@ -259,7 +292,7 @@ public class GameManager : MonoBehaviour
 
 		while (restartText.color.a < 0.8f)
 		{
-			restartText.color = Color.Lerp(restartText.color, Color.white, fadeSpeed * Time.unscaledDeltaTime);
+			restartText.color = Color.Lerp(restartText.color, Color.white, fadeInSpeed * Time.unscaledDeltaTime);
 
 			yield return null;
 		}
