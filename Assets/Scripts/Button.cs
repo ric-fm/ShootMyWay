@@ -31,6 +31,8 @@ public class Button : MonoBehaviour
 			return;
 		}
 
+		GameManager.Instance.Slow(0.4f, 0.2f);
+
 		SoundManager.Instance.PlaySingle(audioSource, pressSound);
 		animator.SetTrigger("Press");
 
@@ -41,5 +43,6 @@ public class Button : MonoBehaviour
 		{
 			logic.Activate();
 		}
+
 	}
 }

@@ -116,4 +116,39 @@ public class GameManager : MonoBehaviour {
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
+
+
+	bool canSlow = true;
+	public void Sleep(float time)
+	{
+		if(canSlow)
+		{
+			StartCoroutine(SlowC(0.0f, time));
+		}
+	}
+
+	public void Slow(float scale, float time)
+	{
+		if (canSlow)
+		{
+			StartCoroutine(SlowC(scale, time));
+		}
+	}
+
+
+	IEnumerator SlowC(float scale, float time)
+	{
+		canSlow = false;
+		float endTime = Time.unscaledTime + time;
+
+		float backupTimeScale = Time.timeScale;
+
+		Time.timeScale = scale;
+
+		yield return new WaitForSecondsRealtime(time);
+
+		Time.timeScale = backupTimeScale;
+
+		canSlow = true;
+	}
 }

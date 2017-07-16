@@ -36,6 +36,10 @@ public class DroneEnemy : Enemy
 	bool hasRandomTarget = false;
 	bool alive = true;
 
+	
+
+	public float maxVelocity;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -78,7 +82,8 @@ public class DroneEnemy : Enemy
 				hasTarget = false;
 				StartCoroutine(ChooseRandomTargetPoint());
 			}
-			rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, balanceFactor * Time.deltaTime);
+			//rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, balanceFactor * Time.deltaTime);
+			rb.velocity = Vector2.ClampMagnitude(Vector2.Lerp(rb.velocity, Vector2.zero, balanceFactor * Time.deltaTime), maxVelocity);
 		}
 		Animate();
 	}
@@ -131,6 +136,8 @@ public class DroneEnemy : Enemy
 	{
 		if (collision.collider.gameObject.tag == "Player")
 		{
+			PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
+			playerController.AddVelocity(impulseOnContact, (playerController.transform.position - transform.position).normalized);
 			Health playerHealth = collision.collider.gameObject.GetComponent<Health>();
 			playerHealth.Hit(damageOnContact);
 			Kill();
@@ -140,5 +147,10 @@ public class DroneEnemy : Enemy
 			Debug.Log("Coll");
 			SelectRandomTarget();
 		}
+	}
+
+	public override void AddVelocity(float velocity, Vector2 direction)
+	{
+		rb.velocity = Vector2.ClampMagnitude(rb.velocity + velocity * direction * Time.deltaTime, maxVelocity);
 	}
 }

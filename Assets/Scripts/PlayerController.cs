@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
 
 	public void AddVelocity(float velocity, Vector2 direction)
 	{
-		rb.velocity = Vector2.ClampMagnitude(velocity * direction * Time.deltaTime, maxVelocity);
+		rb.velocity = Vector2.ClampMagnitude(rb.velocity + velocity * direction * Time.deltaTime, maxVelocity);
 	}
 
 
@@ -267,7 +267,16 @@ public class PlayerController : MonoBehaviour
 					Kill();
 				}
 			}
+
+			AddVelocity(impulseOnWallContact, (transform.position - collision.collider.transform.position).normalized);
+
 		}
+		else if (collision.collider.tag == "Sparry")
+		{
+			Debug.Log("sparry");
+			AddVelocity(impulseOnWallContact, (transform.position - collision.collider.transform.position).normalized);
+		}
+
 	}
 
 	public void Kill()

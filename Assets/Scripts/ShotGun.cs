@@ -25,6 +25,10 @@ public class ShotGun : Weapon
 	AudioSource audioSource;
 	public AudioClip shootSound;
 
+	public float noiseDegrees;
+	public float noiseFactor;
+	public bool deviation = true;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -36,7 +40,8 @@ public class ShotGun : Weapon
 	{
 		animator.SetTrigger("Shoot");
 
-		float angle = Vector2.Angle(Vector2.up, transform.right);
+
+
 
 		for (int i = 0; i < bulletAmount; i++)
 		{
@@ -44,6 +49,15 @@ public class ShotGun : Weapon
 			Vector2 shootDirection = transform.right;
 			shootDirection = transform.right + transform.up * (i - bulletAmount / 2) * bulletSpread;
 
+			if (deviation)
+			{
+				float rand_angle = Random.Range(-noiseDegrees, noiseDegrees);
+
+				transform.Rotate(new Vector3(0, 0, rand_angle * noiseFactor * Time.deltaTime));
+				shootDirection = transform.right;
+			}
+
+			float angle = -Mathf.Atan2(shootDirection.x, shootDirection.y) * Mathf.Rad2Deg;
 
 			GameObject bulletGo = Instantiate(bulletTemplate, shootPoint.position, Quaternion.Euler(0, 0, angle));
 
@@ -51,7 +65,6 @@ public class ShotGun : Weapon
 			bullet.damage = damage;
 			bullet.lifeTime = coolDownTime;
 
-			//bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime);
 			SoundManager.Instance.PlaySingle(audioSource, shootSound);
 			bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime, range);
 

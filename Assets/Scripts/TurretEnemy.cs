@@ -67,6 +67,8 @@ public class TurretEnemy : Enemy {
 	{
 		if (collision.collider.gameObject.tag == "Player")
 		{
+			PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
+			playerController.AddVelocity(impulseOnContact, (playerController.transform.position - transform.position).normalized);
 			Health playerHealth = collision.collider.gameObject.GetComponent<Health>();
 			playerHealth.Hit(damageOnContact);
 			Kill();

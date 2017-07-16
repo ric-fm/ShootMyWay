@@ -32,6 +32,8 @@ public class Enemy : MonoBehaviour {
 
 	public int damageOnContact;
 
+	public float impulseOnContact;
+
 	public bool IsDead
 	{
 		get
@@ -103,5 +105,10 @@ public class Enemy : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	public virtual void AddVelocity(float velocity, Vector2 direction)
+	{
+
 	}
 }

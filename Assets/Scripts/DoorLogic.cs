@@ -15,6 +15,7 @@ public class DoorLogic : Logic
 	bool isClosing;
 
 	public List<MeshRenderer> renderers;
+	public List<Collider2D> colliders;
 
 	public override void Activate()
 	{
@@ -61,6 +62,11 @@ public class DoorLogic : Logic
 			renderer.enabled = false;
 		}
 
+		foreach(Collider2D coll in colliders)
+		{
+			coll.enabled = false;
+		}
+
 		yield return null;
 	}
 
@@ -69,6 +75,11 @@ public class DoorLogic : Logic
 		foreach (MeshRenderer renderer in renderers)
 		{
 			renderer.enabled = true;
+		}
+
+		foreach (Collider2D coll in colliders)
+		{
+			coll.enabled = true;
 		}
 
 		yield return null;
