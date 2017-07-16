@@ -82,6 +82,8 @@ public class GameManager : MonoBehaviour
 
 	public Rules currentRules;
 
+	public bool setRulesOn = false;
+
 	public Text difficultyText;
 
 	public Text livesText;
@@ -275,6 +277,10 @@ public class GameManager : MonoBehaviour
 		}
 
 		currentRules = easyRules;
+		if(setRulesOn)
+		{
+			SetRules();
+		}
 		ShowRules();
 		ShowLives();
 		ShowDifficultyAndLifeText(false);
