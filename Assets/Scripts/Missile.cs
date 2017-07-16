@@ -55,8 +55,9 @@ public class Missile : Bullet {
 	{
 		if (collision.collider.tag.Equals("Player"))
 		{
-			Health health = collision.collider.gameObject.GetComponent<Health>();
-			health.Hit(damage);
+			PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
+
+			playerController.Hit(damage);
 			StopAllCoroutines();
 		}
 

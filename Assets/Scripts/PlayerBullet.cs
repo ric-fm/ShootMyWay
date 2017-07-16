@@ -14,7 +14,11 @@ public class PlayerBullet : Bullet
 
 	public float enemyImpulse;
 
-	public AudioClip hitBulletSound;
+	public AudioClip wallHitSound;
+	public AudioClip jailHitSound;
+	public AudioClip hitSparrySound;
+	public AudioClip enemyHitSound;
+	public AudioClip bulletHitSound;
 
 	public override void Shoot(Vector2 direction, float speed)
 	{
@@ -61,6 +65,8 @@ public class PlayerBullet : Bullet
 					}
 					else
 					{
+						SoundManager.Instance.PlaySingleAtLocation(enemyHitSound, transform.position);
+
 						enemy.AddVelocity(enemyImpulse, transform.up);
 						GameManager.Instance.Sleep(0.1f);
 					}
@@ -69,7 +75,7 @@ public class PlayerBullet : Bullet
 				break;
 			case "EnemyBullet":
 				Destroy(collision.collider.gameObject);
-				SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
+				SoundManager.Instance.PlaySingleAtLocation(bulletHitSound, transform.position);
 
 				GameManager.Instance.Sleep(0.05f);
 				break;
@@ -79,18 +85,17 @@ public class PlayerBullet : Bullet
 				GameManager.Instance.Sleep(0.1f);
 				if (sparry.Hit())
 				{
-					SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
-
+					SoundManager.Instance.PlaySingleAtLocation(hitSparrySound, transform.position);
 				}
 				break;
 			case "Jail":
-				SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
+				SoundManager.Instance.PlaySingleAtLocation(jailHitSound, transform.position);
 				Destroy(collision.collider.gameObject);
 				GameManager.Instance.Slow(0.6f, 0.2f);
 
 				break;
 			case "Wall":
-				SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
+				SoundManager.Instance.PlaySingleAtLocation(wallHitSound, transform.position);
 
 				break;
 		}

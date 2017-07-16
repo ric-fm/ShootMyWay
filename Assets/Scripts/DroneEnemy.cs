@@ -136,8 +136,8 @@ public class DroneEnemy : Enemy
 		{
 			PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
 			playerController.AddVelocity(impulseOnContact, (playerController.transform.position - transform.position).normalized);
-			Health playerHealth = collision.collider.gameObject.GetComponent<Health>();
-			playerHealth.Hit(damageOnContact);
+
+			playerController.Hit(damageOnContact);
 			Kill();
 		}
 		else

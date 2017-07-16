@@ -71,11 +71,15 @@ public class PlayerController : MonoBehaviour
 
 	public bool isDead;
 
+	public AudioClip hitSound;
+	AudioSource source;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		health = GetComponent<Health>();
+		source = GetComponent<AudioSource>();
 		//sR = GetComponent<SpriteRenderer>();
 
 		currentStats = normalStats;
@@ -255,11 +259,16 @@ public class PlayerController : MonoBehaviour
 		currentStats.Range = normalStats.Range;
 	}
 
-
+	public bool wallInvulnerable;
 	public virtual bool Hit(int damage)
 	{
+		if(wallInvulnerable)
+		{
+			return false;
+		}
 		if (health.canHit)
 		{
+			SoundManager.Instance.PlaySingle(source, hitSound);
 			health.Hit(damage);
 			//if (!health.IsDead)
 			//{

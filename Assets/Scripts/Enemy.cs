@@ -34,6 +34,8 @@ public class Enemy : MonoBehaviour {
 
 	public float impulseOnContact;
 
+	public AudioClip deadSound;
+
 	public bool IsDead
 	{
 		get
@@ -90,6 +92,10 @@ public class Enemy : MonoBehaviour {
 
 		GameManager.Instance.ShakeScreen(shakeMagnitudeOnDie, shakeDurationOnDie, transform.position);
 
+		if(deadSound != null)
+		{
+			SoundManager.Instance.PlaySingleAtLocation(deadSound, transform.position);
+		}
 		Destroy(gameObject);
 	}
 
