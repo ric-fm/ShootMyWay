@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
 	public bool isDead;
 
 	public AudioClip hitSound;
+	public AudioClip deadSound;
 	AudioSource source;
 
 	void Start()
@@ -325,6 +326,7 @@ public class PlayerController : MonoBehaviour
 	{
 		isDead = true;
 
+		SoundManager.Instance.PlaySingleAtLocation(deadSound, transform.position);
 		GameManager.Instance.Slow(deathSlowScale, deathSlowTime);
 
 		foreach (GameObject deadPart in deadParts)
