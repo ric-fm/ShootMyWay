@@ -7,11 +7,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System;	
 using UnityEngine.UI;
+
+[Serializable]
+public class Rules
+{
+	public int hits;
+	public bool wallInvulnerable;
+}
 
 public class GameManager : MonoBehaviour
 {
+
+	public enum Difficulty
+	{
+		EASY,
+		NORMAL,
+		HARD
+	}
 
 	private static GameManager instance;
 
@@ -27,6 +41,7 @@ public class GameManager : MonoBehaviour
 
 	CameraController cameraController;
 	PlayerController playerController;
+	Health playerHealth;
 	AudioListener listener;
 
 	public Color noneColor;
@@ -48,6 +63,71 @@ public class GameManager : MonoBehaviour
 	public bool fadeInActive;
 	public bool fadeOutActive;
 
+	public Difficulty difficulty;
+
+	public Rules easyRules;
+
+	public Rules normalRules;
+
+	public Rules hardRules;
+
+	public Rules currentRules;
+
+	public Text difficultyText;
+
+	public void SetDifficulty(Difficulty difficulty)
+	{
+		this.difficulty = difficulty;
+
+		Debug.Log("Set Difficulty");
+		switch(difficulty)
+		{
+			case Difficulty.EASY:
+				Debug.Log("Set easy mode");
+
+				currentRules = easyRules;
+
+				break;
+			case Difficulty.NORMAL:
+				Debug.Log("Set normal mode");
+
+				currentRules = normalRules;
+
+				break;
+
+			case Difficulty.HARD:
+				Debug.Log("Set hard mode");
+
+				currentRules = hardRules;
+
+				break;
+		}
+		SetRules();
+		ShowRules();
+	}
+
+	public void SetRules()
+	{
+		playerController.wallInvulnerable = currentRules.wallInvulnerable;
+		playerHealth.life = currentRules.hits;
+	}
+
+	public void ShowDifficultyText(bool enabled)
+	{
+		difficultyText.enabled = enabled;
+	}
+
+	public void ShowRules()
+	{
+		Debug.Log("Show Rules");
+		difficultyText.text = string.Format(
+			"Lives: {0}\n" +
+			"Spike Proof: {1}",
+			currentRules.hits,
+			currentRules.wallInvulnerable ? "ON" : "OFF"
+		);
+	}
+
 	private void Awake()
 	{
 		instance = this;
@@ -57,6 +137,7 @@ public class GameManager : MonoBehaviour
 	{
 		cameraController = GameObject.FindObjectOfType<CameraController>();
 		playerController = GameObject.FindObjectOfType<PlayerController>();
+		playerHealth = playerController.gameObject.GetComponent<Health>();
 		listener = cameraController.gameObject.GetComponent<AudioListener>();
 		enemyRecord = new EnemyRecord();
 
@@ -64,6 +145,9 @@ public class GameManager : MonoBehaviour
 		{
 			StartCoroutine(StartLevelC());
 		}
+
+		currentRules = easyRules;
+		ShowRules();
 	}
 
 	private void Update()
