@@ -97,6 +97,7 @@ public class Enemy : MonoBehaviour {
 		{
 			SoundManager.Instance.PlaySingleAtLocation(deadSound, deadSoundVolume, transform.position);
 		}
+
 		Destroy(gameObject);
 	}
 
@@ -117,5 +118,10 @@ public class Enemy : MonoBehaviour {
 	public virtual void AddVelocity(float velocity, Vector2 direction)
 	{
 
+	}
+
+	private void OnDestroy()
+	{
+		GameManager.Instance.EnemyDestroyed(this);
 	}
 }

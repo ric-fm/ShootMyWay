@@ -20,6 +20,8 @@ public class Button : MonoBehaviour
 
 	public bool locked;
 
+	public bool DestroyOnUse = false;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -45,6 +47,10 @@ public class Button : MonoBehaviour
 			{
 				logic.Activate();
 			}
+		}
+		if(DestroyOnUse)
+		{
+			GameObject.Destroy(gameObject);
 		}
 
 	}

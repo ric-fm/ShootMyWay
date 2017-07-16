@@ -329,6 +329,18 @@ public class GameManager : MonoBehaviour
 		timer = 0.0f;
 	}
 
+	public delegate void EnemyDestroyedDelegate(Enemy enemy);
+
+	public EnemyDestroyedDelegate OnEnemyDestroyed;
+
+	public void EnemyDestroyed(Enemy enemy)
+	{
+		if(OnEnemyDestroyed != null)
+		{
+			OnEnemyDestroyed(enemy);
+		}
+	}
+
 	public void EnemyKilled(Enemy enemy)
 	{
 		switch (enemy.colorType)
@@ -418,9 +430,6 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = 1.0f;
 		AudioListener.volume = 1.0f;
 		AudioListener.pause = false;
-
-
-
 	}
 
 	IEnumerator RestartLevelC()
