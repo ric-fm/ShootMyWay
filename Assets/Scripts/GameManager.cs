@@ -13,6 +13,15 @@ using UnityEngine.UI;
 [Serializable]
 public class Rules
 {
+	public enum WallMode
+	{
+		INVULNERABLE,
+		HIT,
+		KILL
+	}
+
+	public WallMode wallMode;
+
 	public int hits;
 	public bool wallInvulnerable;
 }
@@ -75,6 +84,11 @@ public class GameManager : MonoBehaviour
 
 	public Text difficultyText;
 
+	public Text livesText;
+	public Image livesImage;
+
+	string difficultyModeText = "EASY";
+
 	public void SetDifficulty(Difficulty difficulty)
 	{
 		this.difficulty = difficulty;
@@ -87,11 +101,15 @@ public class GameManager : MonoBehaviour
 
 				currentRules = easyRules;
 
+				difficultyModeText = "EASY";
+
 				break;
 			case Difficulty.NORMAL:
 				Debug.Log("Set normal mode");
 
 				currentRules = normalRules;
+
+				difficultyModeText = "MEDIUM";
 
 				break;
 
@@ -100,15 +118,34 @@ public class GameManager : MonoBehaviour
 
 				currentRules = hardRules;
 
+				difficultyModeText = "HARD";
+
 				break;
 		}
 		SetRules();
 		ShowRules();
+		ShowLives();
 	}
 
 	public void SetRules()
 	{
 		playerController.wallInvulnerable = currentRules.wallInvulnerable;
+
+		switch (currentRules.wallMode)
+		{
+			case Rules.WallMode.INVULNERABLE:
+				playerController.wallInvulnerable = true;
+				break;
+			case Rules.WallMode.HIT:
+				playerController.wallInvulnerable = false;
+				playerController.damageOnWallContact = 1;
+				break;
+
+			case Rules.WallMode.KILL:
+				playerController.wallInvulnerable = false;
+				playerController.damageOnWallContact = 100;
+				break;
+		}
 		playerHealth.life = currentRules.hits;
 	}
 
@@ -117,14 +154,52 @@ public class GameManager : MonoBehaviour
 		difficultyText.enabled = enabled;
 	}
 
+	public void ShowDifficultyAndLifeText(bool enabled)
+	{
+		difficultyText.enabled = enabled;
+
+		livesText.enabled = enabled;
+		livesImage.enabled = enabled;
+
+		timerText.enabled = enabled;
+	}
+	public void ShowLivesText(bool enabled)
+	{
+		Debug.Log("ShowLivesText " + enabled);
+		livesText.enabled = enabled;
+		livesImage.enabled = enabled;
+	}
+
+	public void ShowLives()
+	{
+		livesText.text = string.Format("x{0}", Mathf.Max(playerHealth.life, 0));
+	}
+
 	public void ShowRules()
 	{
 		Debug.Log("Show Rules");
+
+		string wallModeText = "";
+		switch(currentRules.wallMode)
+		{
+			case Rules.WallMode.INVULNERABLE:
+				wallModeText = "INVULNERABLE";
+				break;
+			case Rules.WallMode.HIT:
+				wallModeText = "HIT";
+				break;
+
+			case Rules.WallMode.KILL:
+				wallModeText = "DEATH";
+				break;
+		}
 		difficultyText.text = string.Format(
-			"Lives: {0}\n" +
-			"Spike Proof: {1}",
+			"{0}\n" +
+			"Lives: {1}\n" +
+			"Spike Proof: {2}",
+			difficultyModeText,
 			currentRules.hits,
-			currentRules.wallInvulnerable ? "ON" : "OFF"
+			wallModeText
 		);
 	}
 
@@ -148,6 +223,8 @@ public class GameManager : MonoBehaviour
 
 		currentRules = easyRules;
 		ShowRules();
+		ShowLives();
+		ShowDifficultyAndLifeText(false);
 	}
 
 	private void Update()

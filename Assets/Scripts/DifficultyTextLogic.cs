@@ -14,7 +14,9 @@ public class DifficultyTextLogic : Logic
 	{
 		base.Activate();
 
-		GameManager.Instance.ShowDifficultyText(true);
+		GameManager.Instance.ShowDifficultyAndLifeText(true);
+		//GameManager.Instance.ShowDifficultyText(true);
+		//GameManager.Instance.ShowLivesText(true);
 	}
 
 	public override void Deactivate()

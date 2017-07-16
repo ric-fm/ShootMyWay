@@ -265,6 +265,7 @@ public class PlayerController : MonoBehaviour
 	}
 
 	public bool wallInvulnerable;
+
 	public virtual bool Hit(int damage)
 	{
 		if(wallInvulnerable)
@@ -273,6 +274,7 @@ public class PlayerController : MonoBehaviour
 		}
 		if (health.canHit)
 		{
+			GameManager.Instance.ShowLives();
 			SoundManager.Instance.PlaySingle(source, hitSound);
 			health.Hit(damage);
 			//if (!health.IsDead)
