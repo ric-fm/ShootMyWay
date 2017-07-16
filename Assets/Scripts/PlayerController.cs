@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
 
 	public float maxVelocity;
 
+	public List<GameObject> deadPartTemplates;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -80,16 +82,20 @@ public class PlayerController : MonoBehaviour
 		ChangeColor();
 	}
 
+	bool fired = false;
+	Vector2 shootDirection;
+
 	void Update()
 	{
 		Vector2 targetPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-		Vector2 direction = (targetPoint - (Vector2)transform.position).normalized;
-		transform.right = direction;
+		shootDirection = (targetPoint - (Vector2)transform.position).normalized;
+		transform.right = shootDirection;
 
-		if (Input.GetButtonDown("Fire1") && shotgun.CanShoot)
+		if (Input.GetButtonDown("Fire1") && shotgun.CanShoot && !fired)
 		{
-			Fire(direction);
+			fired = true;
+			
 		}
 
 		//sR.color = currentColor;
@@ -103,6 +109,11 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if(fired)
+		{
+			fired = false;
+			Fire(shootDirection);
+		}
 		rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxVelocity);
 	}
 
@@ -126,7 +137,7 @@ public class PlayerController : MonoBehaviour
 		animator.SetTrigger("Shoot");
 
 		//Vector2 force = -direction * ImpulseSpeed * Time.deltaTime;
-		Vector2 force = -direction * currentStats.Power * Time.deltaTime;
+		Vector2 force = -direction * currentStats.Power * Time.fixedDeltaTime/* * Time.deltaTime*/;
 		//rb.AddForce(force , ForceMode2D.Impulse);
 		rb.velocity = force;
 
