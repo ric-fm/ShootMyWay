@@ -43,7 +43,7 @@ public class DroneEnemy : Enemy
 		rb = GetComponent<Rigidbody2D>();
 		target = GameObject.FindObjectOfType<PlayerController>().transform;
 		targetPoint = transform.position;
-		SelectRandomTarget();
+		//SelectRandomTarget();
 	}
 
 	void Update()
@@ -123,6 +123,8 @@ public class DroneEnemy : Enemy
 		float randY = Random.Range(transform.position.y - randomTargetOffset, transform.position.y + randomTargetOffset);
 		new Vector2(randX, randY);
 		targetPoint = new Vector2(randX, randY);
+
+		Debug.Log(targetPoint);
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
@@ -135,6 +137,7 @@ public class DroneEnemy : Enemy
 		}
 		else
 		{
+			Debug.Log("Coll");
 			SelectRandomTarget();
 		}
 	}
