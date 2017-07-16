@@ -22,7 +22,9 @@ public class DoorLogic : Logic
 	AudioSource source;
 
 	public AudioClip openSound;
+	public float openSoundVolume = 1.0f;
 	public AudioClip closeSound;
+	public float closeSoundVolume = 1.0f;
 
 	private void Start()
 	{
@@ -71,7 +73,7 @@ public class DoorLogic : Logic
 	{
 
 		if(sound)
-			SoundManager.Instance.PlaySingle(source, openSound);
+			SoundManager.Instance.PlaySingleAtLocation(openSound, openSoundVolume, transform.position);
 
 		foreach(SpriteRenderer renderer in renderers)
 		{
@@ -87,8 +89,11 @@ public class DoorLogic : Logic
 		//yield return null;
 	}
 
-	void Close()
+	void Close(bool sound = true)
 	{
+		if (sound)
+			SoundManager.Instance.PlaySingleAtLocation(closeSound, closeSoundVolume, transform.position);
+
 
 		foreach (SpriteRenderer renderer in renderers)
 		{
