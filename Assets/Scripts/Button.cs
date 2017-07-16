@@ -15,9 +15,13 @@ public class Button : MonoBehaviour
 
 	Animator animator;
 
+	AudioSource audioSource;
+	public AudioClip pressSound;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
@@ -27,6 +31,7 @@ public class Button : MonoBehaviour
 			return;
 		}
 
+		SoundManager.Instance.PlaySingle(audioSource, pressSound);
 		animator.SetTrigger("Press");
 
 		PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();

@@ -22,9 +22,13 @@ public class ShotGun : Weapon
 
 	Animator animator;
 
+	AudioSource audioSource;
+	public AudioClip shootSound;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
+		audioSource = GetComponent<AudioSource>();
 		CanShoot = true;
 	}
 
@@ -48,6 +52,7 @@ public class ShotGun : Weapon
 			bullet.lifeTime = coolDownTime;
 
 			//bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime);
+			SoundManager.Instance.PlaySingle(audioSource, shootSound);
 			bullet.Shoot(shootDirection, bulletSpeed * Time.deltaTime, range);
 
 
