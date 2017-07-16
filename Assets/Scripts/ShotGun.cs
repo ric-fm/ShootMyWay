@@ -34,6 +34,8 @@ public class ShotGun : Weapon
 
 	public Transform cartridgePoint;
 
+	public Color color = Color.white;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -64,6 +66,7 @@ public class ShotGun : Weapon
 			GameObject bulletGo = Instantiate(bulletTemplate, shootPoint.position, Quaternion.Euler(0, 0, angle));
 
 			PlayerBullet bullet = bulletGo.GetComponent<PlayerBullet>();
+			bullet.GetComponent<SpriteRenderer>().color = color;
 			bullet.damage = damage;
 			bullet.lifeTime = coolDownTime;
 

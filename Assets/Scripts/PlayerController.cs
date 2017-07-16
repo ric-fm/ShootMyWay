@@ -195,7 +195,9 @@ public class PlayerController : MonoBehaviour
 			case Enemy.ColorType.BLUE:
 				SetCoolDownBoost();
 				break;
+
 		}
+		shotgun.color = currentColor;
 	}
 
 	public void SparryHit(Sparry sparry)
@@ -218,6 +220,8 @@ public class PlayerController : MonoBehaviour
 				SetCoolDownBoost();
 				break;
 		}
+		shotgun.color = currentColor;
+
 	}
 
 	void ResetBoosts()
@@ -268,7 +272,7 @@ public class PlayerController : MonoBehaviour
 
 	public virtual bool Hit(int damage)
 	{
-		if(wallInvulnerable)
+		if (wallInvulnerable)
 		{
 			return false;
 		}
