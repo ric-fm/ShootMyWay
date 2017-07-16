@@ -406,6 +406,7 @@ public class GameManager : MonoBehaviour
 	{
 		fadeImage.color = Color.black;
 		Time.timeScale = 0.0f;
+		AudioListener.pause = true;
 		AudioListener.volume = 0.0f;
 		while (fadeImage.color.a > 0.3f)
 		{
@@ -416,6 +417,8 @@ public class GameManager : MonoBehaviour
 		fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, 0.0f);
 		Time.timeScale = 1.0f;
 		AudioListener.volume = 1.0f;
+		AudioListener.pause = false;
+
 
 
 	}
@@ -427,6 +430,8 @@ public class GameManager : MonoBehaviour
 		if (fadeOutActive)
 		{
 			Time.timeScale = 0.0f;
+
+			AudioListener.pause = false;
 
 			AudioListener.volume = 0.0f;
 
@@ -440,6 +445,8 @@ public class GameManager : MonoBehaviour
 			restart = false;
 			Time.timeScale = 1.0f;
 			AudioListener.volume = 1.0f;
+			AudioListener.pause = true;
+
 		}
 		restart = false;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
