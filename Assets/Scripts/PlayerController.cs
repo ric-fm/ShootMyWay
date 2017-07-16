@@ -94,10 +94,10 @@ public class PlayerController : MonoBehaviour
 
 	void Update()
 	{
-		if(Time.timeScale == 0.0f)
-		{
-			return;
-		}
+		//if(Time.timeScale == 0.0f)
+		//{
+		//	return;
+		//}
 		if (isDead)
 		{
 			return;
