@@ -67,7 +67,9 @@ public class PlayerController : MonoBehaviour
 
 	public float maxVelocity;
 
-	public List<GameObject> deadPartTemplates;
+	public List<GameObject> deadParts;
+
+	public bool isDead;
 
 	void Start()
 	{
@@ -87,6 +89,10 @@ public class PlayerController : MonoBehaviour
 
 	void Update()
 	{
+		if (isDead)
+		{
+			return;
+		}
 		Vector2 targetPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
 		shootDirection = (targetPoint - (Vector2)transform.position).normalized;
@@ -95,7 +101,7 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetButtonDown("Fire1") && shotgun.CanShoot && !fired)
 		{
 			fired = true;
-			
+
 		}
 
 		//sR.color = currentColor;
@@ -109,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if(fired)
+		if (fired)
 		{
 			fired = false;
 			Fire(shootDirection);
@@ -149,7 +155,7 @@ public class PlayerController : MonoBehaviour
 
 	void ChangeColor()
 	{
-		foreach(SpriteRenderer renderer in renderers)
+		foreach (SpriteRenderer renderer in renderers)
 		{
 			renderer.color = Color.Lerp(renderer.color, currentColor, changeColorFactor * Time.deltaTime);
 		}
@@ -291,5 +297,30 @@ public class PlayerController : MonoBehaviour
 	public void Kill()
 	{
 		Debug.Log("Player is dead");
+
+		if (!isDead)
+		{
+			StartCoroutine(DeathAnimation());
+		}
+	}
+
+	public float deadPartImpulse = 200;
+
+	IEnumerator DeathAnimation()
+	{
+		isDead = true;
+
+		GameManager.Instance.Slow(0.4f, 3.0f);
+
+		foreach (GameObject deadPart in deadParts)
+		{
+			deadPart.transform.parent = GameManager.Instance.persistentTransform;
+			Vector2 force = new Vector2(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f)) * Random.Range(-deadPartImpulse, deadPartImpulse) * Time.deltaTime;
+			deadPart.GetComponent<Rigidbody2D>().AddForce(force);
+		}
+
+		gameObject.SetActive(false);
+
+		yield return null;
 	}
 }
