@@ -121,6 +121,10 @@ public class PlayerBullet : Bullet
 				SoundManager.Instance.PlaySingleAtLocation(wallHitSound, wallSoundVolume, transform.position);
 
 				break;
+			case "WallSafe":
+				SoundManager.Instance.PlaySingleAtLocation(wallHitSound, wallSoundVolume, transform.position);
+
+				break;
 		}
 
 		Destroy(gameObject);

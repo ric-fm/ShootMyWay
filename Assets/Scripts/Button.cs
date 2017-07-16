@@ -26,7 +26,7 @@ public class Button : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.collider.tag != "Player")
+		if (collision.collider.tag != "Player" && collision.collider.tag != "Helmet")
 		{
 			return;
 		}
@@ -36,8 +36,7 @@ public class Button : MonoBehaviour
 		SoundManager.Instance.PlaySingle(audioSource, pressSound);
 		animator.SetTrigger("Press");
 
-		PlayerController playerController = collision.collider.gameObject.GetComponent<PlayerController>();
-		playerController.AddVelocity(impulse, transform.up);
+		GameManager.Instance.playerController.AddVelocity(impulse, transform.up);
 
 		foreach (Logic logic in logics)
 		{

@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
 	public bool isDead;
 
 	public AudioClip hitSound;
+	public AudioClip helmetSound;
 	public AudioClip deadSound;
 	AudioSource source;
 
@@ -220,7 +221,7 @@ public class PlayerController : MonoBehaviour
 
 			case Enemy.ColorType.GREEN:
 				SetRangeBoost();
-				infoText = "SHOOT RANGE + HELMET PROTECTION";
+				infoText = "SHOOT RANGE + HELMET SHIELD";
 
 				break;
 
@@ -288,9 +289,9 @@ public class PlayerController : MonoBehaviour
 		}
 		if (health.canHit)
 		{
-			GameManager.Instance.ShowLives();
 			SoundManager.Instance.PlaySingle(source, hitSound);
 			health.Hit(damage);
+			GameManager.Instance.ShowLives();
 			//if (!health.IsDead)
 			//{
 			//	//animator.SetTrigger("Hit");
@@ -298,6 +299,11 @@ public class PlayerController : MonoBehaviour
 			return true;
 		}
 		return false;
+	}
+
+	public virtual void HitHelmet(int damage)
+	{
+		SoundManager.Instance.PlaySingle(source, helmetSound);
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
@@ -310,6 +316,7 @@ public class PlayerController : MonoBehaviour
 				if(CurrentStat == StatType.RANGE)
 				{
 					onHelmet = true;
+					GameManager.Instance.playerController.HitHelmet(0);
 				}
 			}
 			else

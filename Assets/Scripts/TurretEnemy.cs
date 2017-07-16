@@ -79,6 +79,10 @@ public class TurretEnemy : Enemy {
 			{
 				GameManager.Instance.playerController.Hit(damageOnContact);
 			}
+			else
+			{
+				GameManager.Instance.playerController.HitHelmet(damageOnContact);
+			}
 			Hit(1);
 			//Kill();
 		}

@@ -64,6 +64,10 @@ public class Missile : Bullet {
 			{
 				GameManager.Instance.playerController.Hit(damage);
 			}
+			else
+			{
+				GameManager.Instance.playerController.HitHelmet(0);
+			}
 			//Kill();
 		}
 

@@ -154,6 +154,10 @@ public class DroneEnemy : Enemy
 			{
 				GameManager.Instance.playerController.Hit(damageOnContact);
 			}
+			else
+			{
+				GameManager.Instance.playerController.HitHelmet(damageOnContact);
+			}
 			Kill();
 		}
 		else
