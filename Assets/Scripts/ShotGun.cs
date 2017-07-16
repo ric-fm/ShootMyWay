@@ -24,6 +24,7 @@ public class ShotGun : Weapon
 
 	AudioSource audioSource;
 	public AudioClip shootSound;
+	public AudioClip reloadSound;
 
 	public float noiseDegrees;
 	public float noiseFactor;
@@ -87,5 +88,8 @@ public class ShotGun : Weapon
 
 		GameObject cartridgeGO = Instantiate(cartridgeTemplate, cartridgePoint.position, transform.rotation, GameManager.Instance.persistentTransform);
 		cartridgeGO.GetComponent<Rigidbody2D>().AddForce((transform.up * 60.0f + -transform.right * 40.0f) * Time.deltaTime);
+
+		SoundManager.Instance.PlaySingle(audioSource, reloadSound);
+
 	}
 }
