@@ -14,6 +14,8 @@ public class PlayerBullet : Bullet
 
 	public float enemyImpulse;
 
+	public AudioClip hitBulletSound;
+
 	public override void Shoot(Vector2 direction, float speed)
 	{
 		rb.velocity = direction * speed;
@@ -67,17 +69,28 @@ public class PlayerBullet : Bullet
 				break;
 			case "EnemyBullet":
 				Destroy(collision.collider.gameObject);
+				SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
+
 				GameManager.Instance.Sleep(0.05f);
 				break;
 			case "Sparry":
+
 				Sparry sparry = collision.collider.gameObject.GetComponent<Sparry>();
 				GameManager.Instance.Sleep(0.1f);
+				if (sparry.Hit())
+				{
+					SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
 
-				sparry.Hit();
+				}
 				break;
 			case "Jail":
+				SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
 				Destroy(collision.collider.gameObject);
 				GameManager.Instance.Slow(0.6f, 0.2f);
+
+				break;
+			case "Wall":
+				SoundManager.Instance.PlaySingleAtLocation(hitBulletSound, transform.position);
 
 				break;
 		}

@@ -18,8 +18,7 @@ public class SoundManager : MonoBehaviour {
 		}
 	}
 
-	//public float lowPitchRange = .95f;              //The lowest a sound effect will be randomly pitched.
-	//public float highPitchRange = 1.05f;            //The highest a sound effect will be randomly pitched.
+	public GameObject sourceGOTemplate;
 
 
 	void Awake()
@@ -31,6 +30,13 @@ public class SoundManager : MonoBehaviour {
 	{
 		source.clip = clip;
 		source.Play();
+
+	}
+
+	public void PlaySingleAtLocation(AudioClip clip, Vector2 position)
+	{
+		GameObject sourceGO = GameObject.Instantiate(sourceGOTemplate, position, Quaternion.identity);
+		sourceGO.GetComponent<SoundGameObject>().Play(clip);
 
 	}
 

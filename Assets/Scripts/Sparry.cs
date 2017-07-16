@@ -25,14 +25,16 @@ public class Sparry : MonoBehaviour {
 		ChangeColorType(colorType);
 	}
 
-	public void Hit()
+	public bool Hit()
 	{
 		if(canHit)
 		{
 			animator.SetTrigger("Hit");
 			GameManager.Instance.SparryHit(this);
 			StartCoroutine(Cooldown());
+			return true;
 		}
+		return false;
 	}
 
 	IEnumerator Cooldown()
