@@ -38,7 +38,10 @@ public class KillAllObjective : MonoBehaviour
 	{
 		foreach (Logic logic in logics)
 		{
-			logic.Activate();
+			if(logic != null)
+			{
+				logic.Activate();
+			}
 		}
 	}
 

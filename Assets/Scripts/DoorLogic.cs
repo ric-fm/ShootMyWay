@@ -72,8 +72,8 @@ public class DoorLogic : Logic
 	void Open(bool sound = true)
 	{
 
-		if(sound)
-			SoundManager.Instance.PlaySingleAtLocation(openSound, openSoundVolume, transform.position);
+		//if(sound && GameManager.Instance != null)
+		//	SoundManager.Instance.PlaySingleAtLocation(openSound, openSoundVolume, transform.position);
 
 		foreach(SpriteRenderer renderer in renderers)
 		{

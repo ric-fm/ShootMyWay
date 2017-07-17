@@ -283,10 +283,10 @@ public class PlayerController : MonoBehaviour
 
 	public virtual bool Hit(int damage)
 	{
-		if (wallInvulnerable)
-		{
-			return false;
-		}
+		//if (wallInvulnerable)
+		//{
+		//	return false;
+		//}
 		if (health.canHit)
 		{
 			SoundManager.Instance.PlaySingle(source, hitSound);

@@ -87,6 +87,8 @@ public class Enemy : MonoBehaviour {
 
 	public virtual void Kill()
 	{
+		GameManager.Instance.EnemyDestroyed(this);
+
 		GameObject explosionGO = GameObject.Instantiate(explosionTemplate, transform.position, Quaternion.identity);
 
 		explosionGO.GetComponent<DestroyOnAnimationEnd>().Explode(sR.color);
@@ -120,8 +122,8 @@ public class Enemy : MonoBehaviour {
 
 	}
 
-	private void OnDestroy()
-	{
-		GameManager.Instance.EnemyDestroyed(this);
-	}
+	//private void OnDestroy()
+	//{
+	//	//GameManager.Instance.EnemyDestroyed(this);
+	//}
 }

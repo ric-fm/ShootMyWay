@@ -276,7 +276,7 @@ public class GameManager : MonoBehaviour
 			StartCoroutine(StartLevelC());
 		}
 
-		currentRules = easyRules;
+		currentRules = normalRules;
 		if(setRulesOn)
 		{
 			SetRules();
