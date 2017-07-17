@@ -91,6 +91,11 @@ public class GameManager : MonoBehaviour
 
 	public Text infoText;
 
+	public Text finalText;
+	List<string> sparryFinalTexts;
+	int currentFinalText;
+
+
 
 	string difficultyModeText = "EASY";
 
@@ -389,6 +394,12 @@ public class GameManager : MonoBehaviour
 		}
 
 		playerController.SparryHit(sparry);
+	}
+
+
+	public void SparryFinalHit(SparryFinal sparry)
+	{
+
 	}
 
 	public void ShakeScreen(float magnitude, float duration)

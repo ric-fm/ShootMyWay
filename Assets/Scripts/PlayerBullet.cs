@@ -111,6 +111,16 @@ public class PlayerBullet : Bullet
 					SoundManager.Instance.PlaySingleAtLocation(hitSparrySound, sparrySoundVolume, transform.position);
 				}
 				break;
+
+			case "SparryFinal":
+
+				SparryFinal sparryFinal = collision.collider.gameObject.GetComponent<SparryFinal>();
+				GameManager.Instance.Sleep(0.1f);
+				if (sparryFinal.Hit())
+				{
+					SoundManager.Instance.PlaySingleAtLocation(hitSparrySound, sparrySoundVolume, transform.position);
+				}
+				break;
 			case "Jail":
 				SoundManager.Instance.PlaySingleAtLocation(jailHitSound, jailSoundVolume, transform.position);
 				Destroy(collision.collider.gameObject);

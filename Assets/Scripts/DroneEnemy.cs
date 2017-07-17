@@ -143,8 +143,6 @@ public class DroneEnemy : Enemy
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		Debug.Log("Coll");
-
 		if (collision.collider.gameObject.tag == "Player")
 		{
 			
