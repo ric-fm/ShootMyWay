@@ -254,6 +254,8 @@ public class GameManager : MonoBehaviour
 				}
 			}
 
+			infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0.0f);
+
 			yield return null;
 		}
 	}

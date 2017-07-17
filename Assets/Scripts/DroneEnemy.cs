@@ -56,8 +56,12 @@ public class DroneEnemy : Enemy
 
 	}
 
+	public float correction;
+
 	void Update()
 	{
+		rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, 0.0f, correction * Time.deltaTime);
+
 		if (CanReachTarget())
 		{
 			targetPoint = target.position;
@@ -92,6 +96,7 @@ public class DroneEnemy : Enemy
 			rb.velocity = Vector2.ClampMagnitude(Vector2.Lerp(rb.velocity, Vector2.zero, balanceFactor * Time.deltaTime), maxVelocity);
 		}
 		Animate();
+
 	}
 
 	void Animate()
