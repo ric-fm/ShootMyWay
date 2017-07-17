@@ -298,15 +298,42 @@ public class GameManager : MonoBehaviour
 		sparryFinalTexts = new List<string>()
 		{
 			"THANKS FOR PLAYING!",
-			"DESIGN: RICARDO FRANCO MARTÍN & JOSÉ CARLOS FRANCO MARTÍN",
-			"PROGRAMMING: RICARDO FRANCO MARTÍN",
-			"ART & MUSIC: JOSÉ CARLOS FRANCO MARTÍN",
-			"SPECIAL THANKS: JOSÉ MASSA"
+			"DESIGN\nRICARDO FRANCO MARTÍN\n&\nJOSÉ CARLOS FRANCO MARTÍN",
+			"PROGRAMMING\nRICARDO FRANCO MARTÍN",
+			"ART\nJOSÉ CARLOS FRANCO MARTÍN",
+			"MUSIC & SOUND DESIGN\nJOSÉ CARLOS FRANCO MARTÍN",
+			"SPECIAL THANKS\nJOSÉ MASSA"
 		};
 	}
 
+	public Text exitText;
+
+	float timeToResetExit = 5.0f;
+	IEnumerator TryToExitC()
+	{
+		exitText.text = "PRESS ESC AGAIN TO EXIT";
+		yield return new WaitForSeconds(timeToResetExit);
+		tryToExit = false;
+		exitText.text = "";
+
+	}
+
+	bool tryToExit = false;
 	private void Update()
 	{
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			if(tryToExit)
+			{
+				Debug.Log("Quit");
+				StartCoroutine(TryToExitC());
+			}
+			else
+			{
+				Application.Quit();
+			}
+
+		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
 			RestartLevel();
