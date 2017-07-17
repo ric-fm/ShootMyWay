@@ -222,6 +222,12 @@ public class GameManager : MonoBehaviour
 
 	}
 
+	public void FinishTutorial()
+	{
+		tutorialCompleted = true;
+		infoText.gameObject.SetActive(false);
+	}
+
 	public float fadeInfoSpeed = 1.0f;
 
 	IEnumerator HideInfoText()

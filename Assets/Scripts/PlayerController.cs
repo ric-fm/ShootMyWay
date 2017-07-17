@@ -292,6 +292,11 @@ public class PlayerController : MonoBehaviour
 			SoundManager.Instance.PlaySingle(source, hitSound);
 			health.Hit(damage);
 			GameManager.Instance.ShowLives();
+
+			if(health.IsDead)
+			{
+				Kill();
+			}
 			//if (!health.IsDead)
 			//{
 			//	//animator.SetTrigger("Hit");

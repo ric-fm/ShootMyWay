@@ -23,8 +23,6 @@ public class KillAllObjective : MonoBehaviour
 
 	void EnemyDestroyed(Enemy enemy)
 	{
-		Debug.Log("KillAll enemy destroyed");
-
 		enemies.Remove(enemy);
 
 		if (enemies.Count == 0)
