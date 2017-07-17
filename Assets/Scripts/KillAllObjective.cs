@@ -45,13 +45,14 @@ public class KillAllObjective : MonoBehaviour
 
 	private void Update()
 	{
-		//if (Input.GetKeyDown(KeyCode.W))
-		//{
-		//	List<Enemy> enemyCopy = enemies.ToList();
-		//	foreach (Enemy enemy in enemyCopy)
-		//	{
-		//		GameObject.Destroy(enemy.gameObject);
-		//	}
-		//}
+		if (Input.GetKeyDown(KeyCode.W))
+		{
+			List<Enemy> enemyCopy = enemies.ToList();
+			foreach (Enemy enemy in enemyCopy)
+			{
+				//GameObject.Destroy(enemy.gameObject);
+				enemy.Kill();
+			}
+		}
 	}
 }
