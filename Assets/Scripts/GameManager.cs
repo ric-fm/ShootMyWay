@@ -294,6 +294,15 @@ public class GameManager : MonoBehaviour
 
 		StartCoroutine(HideInfoText());
 
+
+		sparryFinalTexts = new List<string>()
+		{
+			"THANKS FOR PLAYING!",
+			"DESIGN: RICARDO FRANCO MARTÍN & JOSÉ CARLOS FRANCO MARTÍN",
+			"PROGRAMMING: RICARDO FRANCO MARTÍN",
+			"ART & MUSIC: JOSÉ CARLOS FRANCO MARTÍN",
+			"SPECIAL THANKS: JOSÉ MASSA"
+		};
 	}
 
 	private void Update()
@@ -399,7 +408,22 @@ public class GameManager : MonoBehaviour
 
 	public void SparryFinalHit(SparryFinal sparry)
 	{
+		if (currentFinalText == 0)
+		{
+			PauseTimer();
+		}
+		if(currentFinalText < sparryFinalTexts.Count)
+		{
+			string text = sparryFinalTexts[currentFinalText];
+			++currentFinalText;
+			finalText.text = text;
+		}
+		else
+		{
+			finalText.text = "";
 
+			sparry.Explode();
+		}
 	}
 
 	public void ShakeScreen(float magnitude, float duration)

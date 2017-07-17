@@ -19,6 +19,8 @@ public class SparryFinal : MonoBehaviour {
 
 	bool canHit = true;
 
+	public GameObject explosionTemplate;
+
 	private void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -35,6 +37,21 @@ public class SparryFinal : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	public float shakeMagnitude;
+	public float shakeDuration;
+	public Color color;
+	public void Explode()
+	{
+		//GameObject explosionGO = GameObject.Instantiate(explosionTemplate, transform.position, Quaternion.identity);
+
+		//explosionGO.GetComponent<DestroyOnAnimationEnd>().Explode(color);
+
+		GameManager.Instance.ShakeScreen(shakeMagnitude, shakeDuration, transform.position);
+
+		GameManager.Instance.playerController.Kill();
+		Destroy(gameObject);
 	}
 
 	IEnumerator Cooldown()
