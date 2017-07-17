@@ -72,10 +72,11 @@ public class DoorLogic : Logic
 	void Open(bool sound = true)
 	{
 
-		//if(sound && GameManager.Instance != null)
-		//	SoundManager.Instance.PlaySingleAtLocation(openSound, openSoundVolume, transform.position);
+		if (sound)
+			SoundManager.Instance.PlaySingle(source, openSound);
 
-		foreach(SpriteRenderer renderer in renderers)
+
+		foreach (SpriteRenderer renderer in renderers)
 		{
 			renderer.enabled = false;
 		}
@@ -86,13 +87,12 @@ public class DoorLogic : Logic
 		}
 		isOpened = true;
 
-		//yield return null;
 	}
 
 	void Close(bool sound = true)
 	{
 		if (sound)
-			SoundManager.Instance.PlaySingleAtLocation(closeSound, closeSoundVolume, transform.position);
+			SoundManager.Instance.PlaySingle(source, closeSound);
 
 
 		foreach (SpriteRenderer renderer in renderers)
@@ -106,7 +106,6 @@ public class DoorLogic : Logic
 		}
 		isOpened = false;
 
-		//yield return null;
 	}
 
 	void Toggle()
