@@ -3,7 +3,9 @@ My submission for ![Game Maker's Toolkit Jam 2017](https://itch.io/jam/gmtk-jam)
 
 * **Theme:** "Downwell's Dual Purpose Design!"
 
-* **Author:** Ricardo Franco Martín
+* **Authors:**
+  * Ricardo Franco Martín
+  * José Carlos Franco Martín
 
 * **Tools:**
 
