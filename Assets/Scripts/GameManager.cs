@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
 
 
 
-	string difficultyModeText = "EASY";
+	string difficultyModeText = "NORMAL";
 
 	public void SetDifficulty(Difficulty difficulty)
 	{
@@ -591,8 +591,6 @@ public class GameManager : MonoBehaviour
 		gameOver = true;
 
 		yield return new WaitForSecondsRealtime(3.0f);
-
-		Debug.Log("Press R to restart");
 
 		restartText.GetComponent<Animator>().SetTrigger("FadeIn");
 
