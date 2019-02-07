@@ -23,11 +23,15 @@ public class KillAllObjective : MonoBehaviour
 
 	void EnemyDestroyed(Enemy enemy)
 	{
+		if (!enemies.Contains(enemy))
+		{
+			return;
+		}
+
 		enemies.Remove(enemy);
 
 		if (enemies.Count == 0)
 		{
-			Debug.Log("Completed");
 			Completed();
 		}
 	}
@@ -36,23 +40,25 @@ public class KillAllObjective : MonoBehaviour
 	{
 		foreach (Logic logic in logics)
 		{
-			if(logic != null)
+			if (logic != null)
 			{
 				logic.Activate();
 			}
 		}
+		GameManager.Instance.OnEnemyDestroyed -= EnemyDestroyed;
+
 	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.W))
-		{
-			List<Enemy> enemyCopy = enemies.ToList();
-			foreach (Enemy enemy in enemyCopy)
-			{
-				//GameObject.Destroy(enemy.gameObject);
-				enemy.Kill();
-			}
-		}
-	}
+	//private void Update()
+	//{
+	//	if (Input.GetKeyDown(KeyCode.W))
+	//	{
+	//		List<Enemy> enemyCopy = enemies.ToList();
+	//		foreach (Enemy enemy in enemyCopy)
+	//		{
+	//			//GameObject.Destroy(enemy.gameObject);
+	//			enemy.Kill();
+	//		}
+	//	}
+	//}
 }

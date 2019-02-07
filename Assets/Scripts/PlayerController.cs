@@ -78,6 +78,8 @@ public class PlayerController : MonoBehaviour
 
 	public int poweredDamage;
 
+	public bool KillEnemyCheat = false;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -108,9 +110,24 @@ public class PlayerController : MonoBehaviour
 		Vector2 targetPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
 		shootDirection = (targetPoint - (Vector2)transform.position).normalized;
+
+		float x = Input.GetAxisRaw("Horizontal");
+		float y = Input.GetAxisRaw("Vertical");
+		if (Mathf.Abs(x) > 0.2f)
+		{
+			shootDirection.x = x;
+		}
+		if (Mathf.Abs(y) > 0.2f)
+		{
+			shootDirection.y = y;
+		}
+
+		//shootDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxis("Vertical"));
 		transform.right = shootDirection;
 
-		if (Input.GetButtonDown("Fire1") && shotgun.CanShoot && !fired)
+		bool secondaryShoot = Mathf.Abs(Input.GetAxis("Fire2")) > 0.2f;
+
+		if (Input.GetButtonDown("Fire1") || secondaryShoot && shotgun.CanShoot && !fired)
 		{
 			fired = true;
 
@@ -315,6 +332,7 @@ public class PlayerController : MonoBehaviour
 	{
 		if (collision.collider.tag == "Wall")
 		{
+			
 			bool onHelmet = false;
 			if (collision.otherCollider.gameObject.tag == "Helmet")
 			{
@@ -329,7 +347,7 @@ public class PlayerController : MonoBehaviour
 
 			}
 
-			if (!onHelmet)
+			if (!onHelmet && !wallInvulnerable)
 			{
 				Vector2 impulseDirection = Vector3.Reflect(rb.velocity, collision.contacts[0].normal);
 

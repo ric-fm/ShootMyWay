@@ -55,11 +55,11 @@ public class TurretEnemy : Enemy {
 	{
 		while(alive)
 		{
+			yield return new WaitForSeconds(CheckInterval);
 			if(CanReachTarget())
 			{
 				cannon.Shoot();
 			}
-			yield return new WaitForSeconds(CheckInterval);
 		}
 	}
 

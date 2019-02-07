@@ -67,6 +67,12 @@ public class PlayerBullet : Bullet
 
 				int currentDamage = GameManager.Instance.playerController.CurrentStat == PlayerController.StatType.POWER ?
 					GameManager.Instance.playerController.poweredDamage : damage;
+
+				if(GameManager.Instance.playerController.KillEnemyCheat)
+				{
+					currentDamage = 100;
+				}
+
 				if (enemy.Hit(currentDamage))
 				{
 					if (enemy.IsDead)

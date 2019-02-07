@@ -31,7 +31,6 @@ public class SparryFinal : MonoBehaviour {
 		if(canHit)
 		{
 			animator.SetTrigger("Hit");
-			Debug.Log("Hit sparry final");
 			GameManager.Instance.SparryFinalHit(this);
 			StartCoroutine(Cooldown());
 			return true;
